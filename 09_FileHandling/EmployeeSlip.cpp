@@ -1,0 +1,211 @@
+#include <iostream>
+#include <cstdio>
+#include <cstring>
+using namespace std;
+
+// Employee structure definition
+struct Employee
+{
+    int empId;
+    char name[100];
+    float basicSalary;
+};
+
+// Function to create initial employee data (optional - for testing)
+void createEmployeeData()
+{
+    FILE *file = fopen("employee.dat", "wb");
+    if (file == NULL)
+    {
+        cout << "Error: Could not create employee.dat file!" << endl;
+        return;
+    }
+
+    int numEmployees;
+    cout << "Enter number of employees to add: ";
+    cin >> numEmployees;
+
+    for (int i = 0; i < numEmployees; i++)
+    {
+        Employee emp;
+        cout << "\nEmployee " << (i + 1) << ":" << endl;
+        cout << "Enter Employee ID: ";
+        cin >> emp.empId;
+        cin.ignore(); // Clear the newline from buffer
+        cout << "Enter Employee Name: ";
+        cin.getline(emp.name, 100);
+        cout << "Enter Basic Salary: ";
+        cin >> emp.basicSalary;
+
+        // Validate basic salary
+        if (emp.basicSalary <= 0)
+        {
+            cout << "Error: Basic salary must be positive. Skipping this employee." << endl;
+            continue;
+        }
+
+        // Write employee record to binary file
+        fwrite(&emp, sizeof(Employee), 1, file);
+        cout << "Employee record added successfully!" << endl;
+    }
+
+    fclose(file);
+    cout << "\nEmployee data file created successfully!" << endl;
+}
+
+// Function to process employee records and generate salary slips
+void processEmployeeRecords()
+{
+    FILE *file = fopen("employee.dat", "rb");
+    if (file == NULL)
+    {
+        cout << "Error: Could not open employee.dat file!" << endl;
+        cout << "Please create the file first using option 1." << endl;
+        return;
+    }
+
+    Employee emp;
+    int count = 0;
+
+    cout << "\nProcessing employee records..." << endl;
+    cout << "======================================" << endl;
+
+    // Read each employee record from binary file
+    while (fread(&emp, sizeof(Employee), 1, file) == 1)
+    {
+        // Calculate salary components
+        float DA = emp.basicSalary * 0.2f;  // Dearness Allowance (20%)
+        float HRA = emp.basicSalary * 0.1f; // House Rent Allowance (10%)
+        float netSalary = emp.basicSalary + DA + HRA;
+
+        // Generate filename for salary slip
+        char fileName[50];
+        sprintf(fileName, "emp%d_slip.txt", emp.empId);
+
+        // Create and write salary slip to text file
+        FILE *slipFile = fopen(fileName, "w");
+        if (slipFile == NULL)
+        {
+            cout << "Error: Could not create salary slip for Employee ID " << emp.empId << endl;
+            continue;
+        }
+
+        // Write formatted salary slip
+        fprintf(slipFile, "=========================================\n");
+        fprintf(slipFile, "       EMPLOYEE SALARY SLIP\n");
+        fprintf(slipFile, "=========================================\n\n");
+        fprintf(slipFile, "Employee ID   : %d\n", emp.empId);
+        fprintf(slipFile, "Employee Name : %s\n", emp.name);
+        fprintf(slipFile, "-----------------------------------------\n");
+        fprintf(slipFile, "Basic Salary            : Rs. %.2f\n", emp.basicSalary);
+        fprintf(slipFile, "Dearness Allowance (DA) : Rs. %.2f\n", DA);
+        fprintf(slipFile, "House Rent Allowance (HRA): Rs. %.2f\n", HRA);
+        fprintf(slipFile, "-----------------------------------------\n");
+        fprintf(slipFile, "Net Salary              : Rs. %.2f\n", netSalary);
+        fprintf(slipFile, "=========================================\n");
+
+        fclose(slipFile);
+
+        // Display confirmation
+        cout << "Salary slip generated for " << emp.name
+             << " (ID: " << emp.empId << ") -> " << fileName << endl;
+        count++;
+    }
+
+    fclose(file);
+
+    cout << "======================================" << endl;
+    cout << "Total salary slips generated: " << count << endl;
+
+    if (count == 0)
+    {
+        cout << "No employee records found in the file." << endl;
+    }
+}
+
+// Function to display employee records (for verification)
+void displayEmployeeRecords()
+{
+    FILE *file = fopen("employee.dat", "rb");
+    if (file == NULL)
+    {
+        cout << "Error: Could not open employee.dat file!" << endl;
+        return;
+    }
+
+    Employee emp;
+    int count = 0;
+
+    cout << "\n========================================" << endl;
+    cout << "        EMPLOYEE RECORDS" << endl;
+    cout << "========================================" << endl;
+
+    while (fread(&emp, sizeof(Employee), 1, file) == 1)
+    {
+        count++;
+        float DA = emp.basicSalary * 0.2f;
+        float HRA = emp.basicSalary * 0.1f;
+        float netSalary = emp.basicSalary + DA + HRA;
+
+        cout << "\nEmployee " << count << ":" << endl;
+        cout << "  ID            : " << emp.empId << endl;
+        cout << "  Name          : " << emp.name << endl;
+        printf("  Basic Salary  : Rs. %.2f\n", emp.basicSalary);
+        printf("  DA (20%%)      : Rs. %.2f\n", DA);
+        printf("  HRA (10%%)     : Rs. %.2f\n", HRA);
+        printf("  Net Salary    : Rs. %.2f\n", netSalary);
+        cout << "----------------------------------------" << endl;
+    }
+
+    fclose(file);
+
+    if (count == 0)
+    {
+        cout << "No employee records found." << endl;
+    }
+    else
+    {
+        cout << "\nTotal employees: " << count << endl;
+    }
+    cout << "========================================" << endl;
+}
+
+int main()
+{
+    int choice;
+
+    cout << "==========================================" << endl;
+    cout << "   EMPLOYEE SALARY SLIP GENERATOR" << endl;
+    cout << "==========================================" << endl;
+
+    while (true)
+    {
+        cout << "\nMenu:" << endl;
+        cout << "1. Create Employee Data File (employee.dat)" << endl;
+        cout << "2. Generate Salary Slips" << endl;
+        cout << "3. Display Employee Records" << endl;
+        cout << "4. Exit" << endl;
+        cout << "Enter your choice: ";
+        cin >> choice;
+
+        switch (choice)
+        {
+        case 1:
+            createEmployeeData();
+            break;
+        case 2:
+            processEmployeeRecords();
+            break;
+        case 3:
+            displayEmployeeRecords();
+            break;
+        case 4:
+            cout << "\nThank you for using the Employee Salary Slip Generator!" << endl;
+            return 0;
+        default:
+            cout << "Invalid choice! Please try again." << endl;
+        }
+    }
+
+    return 0;
+}

@@ -1,0 +1,174 @@
+#include <iostream>
+#include <cstdlib>
+using namespace std;
+
+// Function to input array elements from the user
+void inputArray(int arr[], int size)
+{
+    cout << "\nEnter " << size << " elements:\n";
+    for (int i = 0; i < size; i++)
+    {
+        cout << "Element [" << i << "]: ";
+        cin >> arr[i];
+    }
+}
+
+// Function to print array elements
+void printArray(int arr[], int size)
+{
+    for (int i = 0; i < size; i++)
+    {
+        cout << arr[i];
+        if (i < size - 1)
+            cout << ", ";
+    }
+    cout << endl;
+}
+
+// Bubble Sort Algorithm
+void bubbleSort(int arr[], int size)
+{
+    bool swapped;
+    for (int i = 0; i < size - 1; i++)
+    {
+        swapped = false;
+        for (int j = 0; j < size - i - 1; j++)
+        {
+            if (arr[j] > arr[j + 1])
+            {
+                // Swap adjacent elements if they are out of order
+                int temp = arr[j];
+                arr[j] = arr[j + 1];
+                arr[j + 1] = temp;
+                swapped = true;
+            }
+        }
+        // If no swaps occurred, array is already sorted
+        if (!swapped)
+            break;
+    }
+}
+
+// Selection Sort Algorithm
+void selectionSort(int arr[], int size)
+{
+    for (int i = 0; i < size - 1; i++)
+    {
+        // Find the minimum element in the unsorted portion
+        int minIndex = i;
+        for (int j = i + 1; j < size; j++)
+        {
+            if (arr[j] < arr[minIndex])
+            {
+                minIndex = j;
+            }
+        }
+        // Swap the found minimum element with the first element of unsorted portion
+        if (minIndex != i)
+        {
+            int temp = arr[i];
+            arr[i] = arr[minIndex];
+            arr[minIndex] = temp;
+        }
+    }
+}
+
+// Comparator function for qsort
+int compare(const void *a, const void *b)
+{
+    return (*(int *)a - *(int *)b);
+}
+
+// Wrapper function for qsort
+void qsortWrapper(int arr[], int size)
+{
+    qsort(arr, size, sizeof(int), compare);
+}
+
+// Function to create a copy of the array
+void copyArray(int source[], int dest[], int size)
+{
+    for (int i = 0; i < size; i++)
+    {
+        dest[i] = source[i];
+    }
+}
+
+int main()
+{
+    int arr[100];
+    int original[100];
+    int size;
+    int choice;
+
+    cout << "========================================\n";
+    cout << "   Array Sorting Program\n";
+    cout << "========================================\n";
+
+    // Input array size with validation
+    do
+    {
+        cout << "\nEnter the size of the array (1-100): ";
+        cin >> size;
+
+        if (size <= 0 || size > 100)
+        {
+            cout << "Invalid size! Please enter a value between 1 and 100.\n";
+        }
+    } while (size <= 0 || size > 100);
+
+    // Input array elements
+    inputArray(arr, size);
+
+    // Store original array for display
+    copyArray(arr, original, size);
+
+    // Display original array
+    cout << "\nOriginal Array: ";
+    printArray(original, size);
+
+    // Display sorting menu
+    cout << "\n========================================\n";
+    cout << "   Select Sorting Method\n";
+    cout << "========================================\n";
+    cout << "1. Bubble Sort\n";
+    cout << "2. Selection Sort\n";
+    cout << "3. Quick Sort (qsort)\n";
+    cout << "========================================\n";
+    cout << "Enter your choice (1-3): ";
+    cin >> choice;
+
+    // Perform sorting based on user's choice
+    switch (choice)
+    {
+    case 1:
+        cout << "\nSorting using Bubble Sort...\n";
+        bubbleSort(arr, size);
+        break;
+
+    case 2:
+        cout << "\nSorting using Selection Sort...\n";
+        selectionSort(arr, size);
+        break;
+
+    case 3:
+        cout << "\nSorting using Quick Sort (qsort)...\n";
+        qsortWrapper(arr, size);
+        break;
+
+    default:
+        cout << "\nInvalid choice! Using Bubble Sort by default...\n";
+        bubbleSort(arr, size);
+        break;
+    }
+
+    // Display sorted array
+    cout << "\nSorted Array: ";
+    printArray(arr, size);
+
+    cout << "\n========================================\n";
+    cout << "   Sorting Complete!\n";
+    cout << "========================================\n";
+
+    return 0;
+}
