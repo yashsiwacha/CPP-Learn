@@ -1,12 +1,13 @@
+// Program to compute statistical analysis on array of numbers
 #include <iostream>
 #include <iomanip>
 #include <numeric>
 using namespace std;
 
-// Populates the dynamic array with user input values
-// Returns false if invalid input is detected
+// Function to populate array with user input
 bool populateDataset(int *dataPoints, int datasetLength)
 {
+    // Validate pointer and array size
     if (dataPoints == nullptr || datasetLength <= 0)
     {
         cerr << "Error: Invalid array or size!" << endl;
@@ -16,21 +17,22 @@ bool populateDataset(int *dataPoints, int datasetLength)
     cout << "Enter " << datasetLength << " numbers: ";
     for (int index = 0; index < datasetLength; index++)
     {
+        // Check if input is valid integer
         if (!(cin >> dataPoints[index]))
         {
             cerr << "Error: Invalid input detected at position " << (index + 1) << endl;
-            cin.clear();
-            cin.ignore(10000, '\n');
+            cin.clear();             // Clear error state
+            cin.ignore(10000, '\n'); // Discard bad input
             return false;
         }
     }
     return true;
 }
 
-// Computes the cumulative sum of all elements
-// Returns 0 if array is invalid
+// Function to calculate sum of all elements
 int computeTotalSum(int *dataPoints, int datasetLength)
 {
+    // Validate inputs
     if (dataPoints == nullptr || datasetLength <= 0)
     {
         cerr << "Warning: Cannot compute sum of invalid array!" << endl;
@@ -38,6 +40,7 @@ int computeTotalSum(int *dataPoints, int datasetLength)
     }
 
     int cumulativeSum = 0;
+    // Loop through array and add each element
     for (int index = 0; index < datasetLength; index++)
     {
         cumulativeSum += dataPoints[index];
@@ -45,8 +48,7 @@ int computeTotalSum(int *dataPoints, int datasetLength)
     return cumulativeSum;
 }
 
-// Determines the arithmetic mean of the dataset
-// Returns 0.0 if array is invalid or empty
+// Function to calculate average (mean) of array
 double determineArithmeticMean(int *dataPoints, int datasetLength)
 {
     if (dataPoints == nullptr || datasetLength <= 0)
@@ -57,7 +59,6 @@ double determineArithmeticMean(int *dataPoints, int datasetLength)
     return static_cast<double>(computeTotalSum(dataPoints, datasetLength)) / datasetLength;
 }
 
-// Checks if array contains any negative values
 bool containsNegativeValues(int *dataPoints, int datasetLength)
 {
     if (dataPoints == nullptr || datasetLength <= 0)
@@ -73,7 +74,6 @@ bool containsNegativeValues(int *dataPoints, int datasetLength)
     return false;
 }
 
-// Displays formatted statistical results
 void displayResults(double meanValue, int datasetLength, bool hasNegatives)
 {
     cout << "\n=== Statistical Analysis ===" << endl;
@@ -90,28 +90,24 @@ int main()
     int datasetLength;
     cout << "Enter the number of data points: ";
 
-    // Validate input stream
     if (!(cin >> datasetLength))
     {
         cerr << "Error: Invalid input! Please enter a valid integer." << endl;
         return 1;
     }
 
-    // Validate dataset size
     if (datasetLength <= 0)
     {
         cerr << "Error: Dataset size must be positive!" << endl;
         return 1;
     }
 
-    // Check for unreasonably large sizes to prevent memory issues
     if (datasetLength > 1000000)
     {
         cerr << "Error: Dataset size too large (max 1,000,000)!" << endl;
         return 1;
     }
 
-    // Attempt dynamic memory allocation with error handling
     int *numericalDataset = nullptr;
     try
     {
@@ -123,7 +119,6 @@ int main()
         return 1;
     }
 
-    // Populate array with validation
     if (!populateDataset(numericalDataset, datasetLength))
     {
         cerr << "Error: Failed to populate dataset!" << endl;
@@ -131,14 +126,10 @@ int main()
         return 1;
     }
 
-    // Check for negative values
     bool hasNegatives = containsNegativeValues(numericalDataset, datasetLength);
-
-    // Calculate and display results
     double meanValue = determineArithmeticMean(numericalDataset, datasetLength);
     displayResults(meanValue, datasetLength, hasNegatives);
 
-    // Clean up memory
     delete[] numericalDataset;
     numericalDataset = nullptr;
 

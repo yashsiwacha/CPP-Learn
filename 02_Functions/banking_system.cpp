@@ -1,100 +1,112 @@
-//Developing a program to make functions of banking operations like deposit, withdraw and check balance.
+// Program for banking operations like deposit, withdraw and check balance.
 #include <iostream>
 #include <string>
 using namespace std;
 
-//Global static variable to maintain account balance across function calls
+// Global static variable - persists across function calls to maintain balance
 static float balance = 0;
 
-//Adds specified amount to account balance
-void deposit(float amount){
-    // Explicit check for negative deposit
-    if(amount < 0) {
+// Function to add money to the account
+void deposit(float amount)
+{
+    // Validate input - reject negative amounts
+    if (amount < 0)
+    {
         cout << "Deposit amount cannot be negative." << endl;
     }
-    // Check for zero deposit
-    else if(amount == 0) {
+    // Reject zero deposits
+    else if (amount == 0)
+    {
         cout << "Deposit amount should be positive." << endl;
     }
-    else {
-        balance += amount;
+    else
+    {
+        balance += amount; // Add to balance
         cout << "Amount successfully deposited." << endl;
     }
 }
 
-//Deducts specified amount from account balance
-void withdraw(float withdrawalAmount){
-    // Explicit zero withdrawal check
-    if(withdrawalAmount == 0) {
+// Function to withdraw money from the account
+void withdraw(float withdrawalAmount)
+{
+    // Check for zero withdrawal
+    if (withdrawalAmount == 0)
+    {
         cout << "Withdrawal amount cannot be zero." << endl;
     }
-    // Negative amount validation
-    else if(withdrawalAmount < 0) {
+    // Validate for negative amount
+    else if (withdrawalAmount < 0)
+    {
         cout << "Withdrawal amount should be positive." << endl;
     }
-    // Check for zero balance
-    else if(balance == 0) {
+    // Check if account has any balance
+    else if (balance == 0)
+    {
         cout << "Balance is zero. Cannot process withdrawal." << endl;
     }
-    // Verify sufficient funds
-    else if(balance - withdrawalAmount < 0) {
+    // Check for sufficient funds
+    else if (balance - withdrawalAmount < 0)
+    {
         cout << "Insufficient funds. Available balance: " << balance << endl;
     }
-    // Process withdrawal
-    else {
-        balance -= withdrawalAmount;
+    else
+    {
+        balance -= withdrawalAmount; // Deduct from balance
         cout << "Amount successfully withdrawn. New balance: " << balance << endl;
     }
 }
 
-//Returns current account balance
-float checkBalance(){
+// Function to return current balance
+float checkBalance()
+{
     return balance;
 }
 
-//Validates and retrieves numeric input from user
-bool getValidatedAmount(float &transactionAmount){
+// Function to validate numeric input from user
+bool getValidatedAmount(float &transactionAmount)
+{
     cin >> transactionAmount;
-    
-    // Check if cin encountered an error (non-numeric input)
-    if(cin.fail()){
-        cin.clear();
-        cin.ignore(10000, '\n');
+
+    // Check if input failed (non-numeric input)
+    if (cin.fail())
+    {
+        cin.clear();             // Clear error flags
+        cin.ignore(10000, '\n'); // Discard invalid input
         cout << "Invalid input. Please enter a numeric value." << endl;
         return false;
     }
     return true;
 }
 
-//Handles deposit transaction workflow
-void handleDepositTransaction(){
+void handleDepositTransaction()
+{
     float depositAmount;
     cout << "Enter the amount to deposit: ";
-    
-    if(getValidatedAmount(depositAmount)){
+
+    if (getValidatedAmount(depositAmount))
+    {
         deposit(depositAmount);
     }
 }
 
-//Handles withdrawal transaction workflow
-void handleWithdrawalTransaction(){
+void handleWithdrawalTransaction()
+{
     float requestedAmount;
     cout << "Enter the amount to withdraw: ";
-    
-    if(getValidatedAmount(requestedAmount)){
+
+    if (getValidatedAmount(requestedAmount))
+    {
         withdraw(requestedAmount);
     }
 }
 
-//Displays current account balance
-void displayAccountBalance(){
+void displayAccountBalance()
+{
     cout << "Current Balance: " << checkBalance() << endl;
 }
 
-
-//Main menu loop for user interaction
-void banking(){
-    // Welcome message and available commands
+void banking()
+{
     cout << "========================================" << endl;
     cout << "  Welcome to the Banking System!" << endl;
     cout << "========================================" << endl;
@@ -104,35 +116,40 @@ void banking(){
     cout << "  - CheckBalance: View current balance" << endl;
     cout << "  - Exit: Close the banking session" << endl;
     cout << "========================================" << endl;
-    
-    // Main interaction loop
-    while(true){
+
+    while (true)
+    {
         string userCommand;
         cout << "\n>> Enter command: ";
         cin >> userCommand;
-        
-        if(userCommand == "Deposit"){
+
+        if (userCommand == "Deposit")
+        {
             handleDepositTransaction();
         }
-        else if(userCommand == "Withdraw"){
+        else if (userCommand == "Withdraw")
+        {
             handleWithdrawalTransaction();
         }
-        else if(userCommand == "CheckBalance"){
+        else if (userCommand == "CheckBalance")
+        {
             displayAccountBalance();
         }
-        else if(userCommand == "Exit"){
+        else if (userCommand == "Exit")
+        {
             cout << "\nThank you for using the Banking System!" << endl;
             cout << "Final Balance: " << checkBalance() << endl;
             break;
         }
-        else {
+        else
+        {
             cout << "Error: Invalid command. Please try again." << endl;
         }
     }
 }
 
-//Main Function
-int main(){
+int main()
+{
     banking();
     return 0;
 }

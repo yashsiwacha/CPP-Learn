@@ -1,8 +1,8 @@
+// Program demonstrating linear and binary search algorithms
 #include <iostream>
-#include <algorithm> // for sort function
+#include <algorithm>
 using namespace std;
 
-// Function to input array elements from user
 void inputArray(int arr[], int size)
 {
     cout << "Enter " << size << " elements:\n";
@@ -13,7 +13,6 @@ void inputArray(int arr[], int size)
     }
 }
 
-// Function to display array elements
 void displayArray(int arr[], int size)
 {
     cout << "Array elements: ";
@@ -24,7 +23,6 @@ void displayArray(int arr[], int size)
     cout << endl;
 }
 
-// Function to check if array is sorted
 bool isSorted(int arr[], int size)
 {
     for (int i = 0; i < size - 1; i++)
@@ -37,26 +35,19 @@ bool isSorted(int arr[], int size)
     return true;
 }
 
-// Linear Search Algorithm
-// Traverses array element by element to find the key
-// Time Complexity: O(n)
-// Works with both sorted and unsorted arrays
 int linearSearch(int arr[], int size, int key)
 {
     for (int i = 0; i < size; i++)
     {
         if (arr[i] == key)
         {
-            return i; // Return index if key is found
+            return i;
         }
     }
-    return -1; // Return -1 if key is not found
+    return -1;
 }
 
-// Binary Search Algorithm
-// Efficiently searches in a sorted array by dividing search interval in half
-// Time Complexity: O(log n)
-// Requires array to be sorted
+// Binary search - requires sorted array, O(log n) complexity
 int binarySearch(int arr[], int size, int key)
 {
     int low = 0;
@@ -64,23 +55,23 @@ int binarySearch(int arr[], int size, int key)
 
     while (low <= high)
     {
-        int mid = low + (high - low) / 2; // Calculate middle index
+        int mid = low + (high - low) / 2;
 
         if (arr[mid] == key)
         {
-            return mid; // Key found at mid index
+            return mid;
         }
         else if (arr[mid] < key)
         {
-            low = mid + 1; // Search in right half
+            low = mid + 1;
         }
         else
         {
-            high = mid - 1; // Search in left half
+            high = mid - 1;
         }
     }
 
-    return -1; // Key not found
+    return -1;
 }
 
 // Function to print search result

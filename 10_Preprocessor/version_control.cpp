@@ -1,27 +1,13 @@
-/*
- * version_control.cpp - Main program to demonstrate header guards and version control
- *
- * This program demonstrates:
- * 1. Using header guards to prevent multiple inclusions
- * 2. Version control using preprocessor macros
- * 3. Conditional compilation based on version numbers
- * 4. Modular programming with header files
- *
- * To test different versions:
- * - Edit config.h and change VERSION to different values (e.g., 2, 3, 4, 5)
- * - VERSION >= 3 will show "Stable version"
- * - VERSION < 3 will show "Beta version"
- */
+// Program demonstrating header guards and version control
 
 #include <iostream>
 #include <cstdio>
 #include "config.h"
-#include "config.h" // Include again to test header guard protection
-#include "config.h" // Include a third time - no errors due to header guards!
+#include "config.h"
+#include "config.h"
 
 using namespace std;
 
-// Function to display version information
 void displayVersionInfo()
 {
     printf("=================================\n");
@@ -33,7 +19,6 @@ void displayVersionInfo()
     printf("=================================\n\n");
 }
 
-// Function to display feature flags
 void displayFeatures()
 {
     printf("Feature Flags:\n");
@@ -42,7 +27,6 @@ void displayFeatures()
     printf("\n");
 }
 
-// Function to demonstrate version-specific behavior
 void executeVersionSpecificCode()
 {
     cout << "Executing version-specific code...\n";
@@ -60,7 +44,6 @@ void executeVersionSpecificCode()
     cout << endl;
 }
 
-// Demonstrate feature-based compilation
 void demonstrateFeatures()
 {
     cout << "Demonstrating feature-based compilation:\n";

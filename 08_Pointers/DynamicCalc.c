@@ -1,48 +1,25 @@
-/*
- * Dynamic Calculator Using Callbacks
- *
- * This program demonstrates the use of function pointers as callbacks to create
- * a flexible, modular calculator that can dynamically select operations at runtime.
- *
- * Key Concepts Demonstrated:
- * - Function pointers as callbacks
- * - Higher-order functions (functions that take functions as arguments)
- * - Strategy Pattern (runtime algorithm selection)
- * - Error handling with callbacks
- * - Modular and extensible code design
- */
-
+// Dynamic Calculator Using Function Pointers (Callbacks)
 #include <iostream>
 #include <limits>
 using namespace std;
 
-// Error code for division by zero
 const int DIV_BY_ZERO_ERROR = INT_MIN;
 
-/*
- * Arithmetic Operation Functions
- * Each function takes two integers and returns their computed result
- */
-
-// Addition operation
 int add(int a, int b)
 {
     return a + b;
 }
 
-// Subtraction operation
 int subtract(int a, int b)
 {
     return a - b;
 }
 
-// Multiplication operation
 int multiply(int a, int b)
 {
     return a * b;
 }
 
-// Division operation with error handling
 int divide(int a, int b)
 {
     if (b == 0)
@@ -53,29 +30,11 @@ int divide(int a, int b)
     return a / b;
 }
 
-/*
- * Generic Calculate Function (Callback Style)
- *
- * This function demonstrates the callback mechanism by accepting a function pointer
- * that determines which operation to perform.
- *
- * Parameters:
- *   a         - First operand
- *   b         - Second operand
- *   operation - Function pointer to the arithmetic operation to perform
- *
- * Returns:
- *   Result of the operation, or error code if operation fails
- */
 int calculate(int a, int b, int (*operation)(int, int))
 {
-    // Invoke the callback function with the provided operands
     return operation(a, b);
 }
 
-/*
- * Helper function to print operation results
- */
 void printResult(const char *operationName, int a, int b, int result)
 {
     if (result == DIV_BY_ZERO_ERROR)

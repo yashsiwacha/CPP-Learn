@@ -1,26 +1,23 @@
+// Attendance Logging System
 #include <iostream>
 #include <cstdio>
 #include <cstring>
 #include <ctime>
 using namespace std;
 
-// Function to validate timestamp format (YYYY-MM-DD HH:MM)
 bool validateTimestamp(const char *timeStamp)
 {
     int year, month, day, hour, minute;
     char dash1, dash2, colon, space;
 
-    // Parse the timestamp
     int result = sscanf(timeStamp, "%d%c%d%c%d%c%d%c%d",
                         &year, &dash1, &month, &dash2, &day, &space, &hour, &colon, &minute);
 
-    // Check if parsing was successful and format is correct
     if (result != 9 || dash1 != '-' || dash2 != '-' || space != ' ' || colon != ':')
     {
         return false;
     }
 
-    // Validate ranges
     if (year < 2000 || year > 2100 || month < 1 || month > 12 ||
         day < 1 || day > 31 || hour < 0 || hour > 23 || minute < 0 || minute > 59)
     {
@@ -30,18 +27,17 @@ bool validateTimestamp(const char *timeStamp)
     return true;
 }
 
-// Function to check if attendance already logged for this employee today
 bool isDuplicateEntry(int empID, const char *timeStamp)
 {
     FILE *f1 = fopen("Attendance.txt", "r");
     if (f1 == NULL)
     {
-        return false; // File doesn't exist yet, no duplicates
+        return false;
     }
 
     char line[256];
     char date[15];
-    sscanf(timeStamp, "%10s", date); // Extract date portion (YYYY-MM-DD)
+    sscanf(timeStamp, "%10s", date);
 
     while (fgets(line, sizeof(line), f1) != NULL)
     {
@@ -53,7 +49,6 @@ bool isDuplicateEntry(int empID, const char *timeStamp)
             char existingDate[15];
             sscanf(existingTimestamp, "%10s", existingDate);
 
-            // Check if same employee and same date
             if (existingEmpID == empID && strcmp(date, existingDate) == 0)
             {
                 fclose(f1);
@@ -66,7 +61,6 @@ bool isDuplicateEntry(int empID, const char *timeStamp)
     return false;
 }
 
-// Function to log attendance
 void appendAttendance(int empID, const char *timeStamp)
 {
     // Validate timestamp format

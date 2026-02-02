@@ -1,14 +1,7 @@
 // Dynamic String Copy Implementation
-// Demonstrates safe string copying with dynamic memory allocation
 #include <stdio.h>
 #include <stdlib.h>
 
-/**
- * StringLength - Calculates the length of a string
- * @str: Pointer to the string
- *
- * Returns: Length of the string (excluding null terminator)
- */
 int StringLength(const char *str)
 {
     int length = 0;
@@ -19,38 +12,27 @@ int StringLength(const char *str)
     return length;
 }
 
-/**
- * StringCopy - Dynamically allocates memory and copies a string
- * @source: Pointer to the source string (null-terminated)
- *
- * Returns: Pointer to newly allocated string, or NULL on failure
- * Note: Caller is responsible for freeing the returned memory
- */
 char *StringCopy(const char *source)
 {
-    // Handle NULL source pointer
     if (source == NULL)
     {
         printf("Error: NULL source pointer\n");
         return NULL;
     }
 
-    // Calculate the length using our StringLength function (code reuse!)
     int length = StringLength(source);
 
-    // Allocate memory for destination (length + 1 for null terminator)
+    // Allocate memory for destination (+1 for null terminator)
     char *destination = (char *)malloc((length + 1) * sizeof(char));
 
-    // Check if malloc succeeded
     if (destination == NULL)
     {
         printf("Error: Memory allocation failed\n");
         return NULL;
     }
 
-    // Copy characters AND null terminator in one loop
     int i;
-    for (i = 0; i <= length; i++) // Note: i <= length to include '\0'
+    for (i = 0; i <= length; i++)
     {
         destination[i] = source[i];
     }

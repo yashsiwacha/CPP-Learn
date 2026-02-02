@@ -1,9 +1,8 @@
-// Program to perform addition, subtraction, multiplication and transpose of two matrices
+// Program to perform matrix operations (addition, subtraction, multiplication, transpose)
 #include <iostream>
 #include <iomanip>
 using namespace std;
 
-// Helper function to validate and get matrix dimensions with edge case handling
 void getDimensions(int &rows, int &cols, const string &matrixName)
 {
     do
@@ -21,12 +20,11 @@ void getDimensions(int &rows, int &cols, const string &matrixName)
         }
         else
         {
-            break; // Valid dimensions
+            break;
         }
     } while (true);
 }
 
-// Improved input function with clearer prompts
 void inputMatrix(int rows, int cols, int matrix[][100], const string &matrixName)
 {
     cout << "\nEntering elements for " << matrixName << " (" << rows << "x" << cols << "):\n";
@@ -41,7 +39,6 @@ void inputMatrix(int rows, int cols, int matrix[][100], const string &matrixName
     cout << matrixName << " input complete!\n";
 }
 
-// Function for addition of two matrixs.
 void addMatrix(int rows, int cols, int matrix1[][100], int matrix2[][100], int result[][100])
 {
     for (int i = 0; i < rows; i++)
@@ -53,7 +50,6 @@ void addMatrix(int rows, int cols, int matrix1[][100], int matrix2[][100], int r
     }
 }
 
-// Function for subtraction of two matrixs.
 void subtractMatrix(int rows, int cols, int matrix1[][100], int matrix2[][100], int result[][100])
 {
     for (int i = 0; i < rows; i++)
@@ -65,20 +61,14 @@ void subtractMatrix(int rows, int cols, int matrix1[][100], int matrix2[][100], 
     }
 }
 
-// Function for multiplication of two matrices with detailed comments.
 void multiplyMatrices(int r1, int c1, int r2, int c2, int mat1[][100], int mat2[][100], int result[][100])
 {
-    // Outer loop: iterate through rows of first matrix
     for (int i = 0; i < r1; i++)
     {
-        // Middle loop: iterate through columns of second matrix
         for (int j = 0; j < c2; j++)
         {
-            // Initialize the result element to zero
             result[i][j] = 0;
 
-            // Inner loop: compute dot product of row i from mat1 and column j from mat2
-            // This is where the actual multiplication happens: sum of (mat1[i][k] * mat2[k][j])
             for (int k = 0; k < c1; k++)
             {
                 result[i][j] += mat1[i][k] * mat2[k][j];
@@ -87,7 +77,6 @@ void multiplyMatrices(int r1, int c1, int r2, int c2, int mat1[][100], int mat2[
     }
 }
 
-// Function for transpose of matrix.
 void transposeMatrix(int rows, int cols, int matrix[][100], int result[][100])
 {
     for (int i = 0; i < rows; i++)

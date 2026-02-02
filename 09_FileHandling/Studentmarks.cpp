@@ -1,10 +1,9 @@
-// Program to modify marks of students in a existing record.
+// Program to modify marks of students in an existing record.
 #include <iostream>
 #include <cstdio>
 #include <cstring>
 using namespace std;
 
-// Structure of student.
 struct Student
 {
     int rollNo;
@@ -12,7 +11,6 @@ struct Student
     float marks;
 };
 
-// Function to create initial student records (for testing)
 void createStudentRecords()
 {
     FILE *file = fopen("students.dat", "wb");
@@ -38,7 +36,6 @@ void createStudentRecords()
         cout << "Enter Marks (0-100): ";
         cin >> student.marks;
 
-        // Validate marks
         if (student.marks < 0 || student.marks > 100)
         {
             cout << "Error: Marks must be between 0 and 100. Skipping this student." << endl;
@@ -53,7 +50,6 @@ void createStudentRecords()
     cout << "\nStudent records file created successfully!" << endl;
 }
 
-// Function to display all student records
 void displayAllRecords()
 {
     FILE *file = fopen("students.dat", "rb");
@@ -92,7 +88,6 @@ void displayAllRecords()
     }
 }
 
-// Function to search and update a student's marks
 void searchAndUpdateMarks()
 {
     FILE *file = fopen("students.dat", "r+b");

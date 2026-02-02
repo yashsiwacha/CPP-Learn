@@ -1,3 +1,4 @@
+// Program demonstrating platform-specific conditional compilation
 #include <iostream>
 
 // #define WINDOWS

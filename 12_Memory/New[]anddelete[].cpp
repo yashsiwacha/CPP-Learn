@@ -1,55 +1,42 @@
-// Program to Compare C++ Memory Management (new[]/delete[]) vs C Memory Management (malloc/free)
-// This program demonstrates the key differences between the two approaches
+// Program comparing C++ memory management (new[]/delete[]) vs C memory management (malloc/free)
 
 #include <iostream>
-#include <cstdlib> // For malloc and free
-#include <cstring> // For memset
+#include <cstdlib>
+#include <cstring>
 
 using namespace std;
 
-// ============================================================================
-// DEMO CLASS: To demonstrate constructor/destructor behavior differences
-// ============================================================================
 class Element
 {
 private:
     int value;
 
 public:
-    // Constructor - ONLY called with new[], NOT with malloc
     Element() : value(0)
     {
         cout << "    [Constructor called for Element at " << this << "]" << endl;
     }
 
-    // Parameterized constructor
     Element(int val) : value(val)
     {
         cout << "    [Constructor called for Element with value " << val << "]" << endl;
     }
 
-    // Destructor - ONLY called with delete[], NOT with free
     ~Element()
     {
         cout << "    [Destructor called for Element at " << this << " with value " << value << "]" << endl;
     }
 
-    // Setter method
     void setValue(int val) { value = val; }
 
-    // Getter method
     int getValue() const { return value; }
 
-    // Display method
     void display() const
     {
         cout << value << " ";
     }
 };
 
-// ============================================================================
-// FUNCTION PROTOTYPES
-// ============================================================================
 void demonstrate_cpp_memory_management();
 void demonstrate_c_memory_management();
 void demonstrate_constructor_destructor_difference();

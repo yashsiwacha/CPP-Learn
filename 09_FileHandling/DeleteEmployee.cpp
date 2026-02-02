@@ -1,10 +1,9 @@
-// Program to delete records of a employee
+// Program to delete employee records
 #include <iostream>
 #include <cstdio>
 #include <cstring>
 using namespace std;
 
-// Employee structure definition (must match the structure used in EmployeeSlip.cpp)
 struct Employee
 {
     int empId;
@@ -12,7 +11,6 @@ struct Employee
     float basicSalary;
 };
 
-// Function to create test employee records (for testing purposes)
 void createEmployeeRecords()
 {
     FILE *file = fopen("employee.dat", "wb");
@@ -38,7 +36,6 @@ void createEmployeeRecords()
         cout << "Enter Basic Salary: ";
         cin >> emp.basicSalary;
 
-        // Validate basic salary
         if (emp.basicSalary <= 0)
         {
             cout << "Error: Salary must be positive. Skipping this employee." << endl;
@@ -53,7 +50,6 @@ void createEmployeeRecords()
     cout << "\nEmployee records file created successfully!" << endl;
 }
 
-// Function to display all employee records
 void displayAllEmployees()
 {
     FILE *file = fopen("employee.dat", "rb");
@@ -92,7 +88,6 @@ void displayAllEmployees()
     }
 }
 
-// Function to delete an employee record
 void deleteEmployeeRecord()
 {
     // Step 1: Open the original file in read binary mode

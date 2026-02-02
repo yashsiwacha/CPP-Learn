@@ -2,7 +2,6 @@
 #include <iostream>
 using namespace std;
 
-// Function to reverse array by mirroring elements.
 void mirrorArrayElements(int sourceArr[], int reversedArr[], int arrayLength)
 {
     for (int i = 0; i < arrayLength; i++)
@@ -11,7 +10,6 @@ void mirrorArrayElements(int sourceArr[], int reversedArr[], int arrayLength)
     }
 }
 
-// Function to populate array with user input.
 void populateArrayFromUser(int arr[], int arrayLength)
 {
     cout << "Enter " << arrayLength << " elements: ";
@@ -21,7 +19,6 @@ void populateArrayFromUser(int arr[], int arrayLength)
     }
 }
 
-// Function to display array elements in formatted output.
 void displayArrayElements(int arr[], int arrayLength, string label = "Array")
 {
     cout << label << ": ";
@@ -34,7 +31,6 @@ void displayArrayElements(int arr[], int arrayLength, string label = "Array")
     cout << endl;
 }
 
-// Function to get valid array size from user with error handling.
 int getValidArraySize()
 {
     int size;

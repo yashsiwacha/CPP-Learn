@@ -10,7 +10,6 @@
 #define LOG_LEVEL 1
 #endif
 
-// Conditional LOG macro based on LOG_LEVEL
 #if LOG_LEVEL >= 4
 #define LOG(level, msg)              \
     if (level <= LOG_LEVEL)          \

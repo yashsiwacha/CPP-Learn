@@ -1,43 +1,20 @@
-/*
- * Feature Toggle Using #ifdef and #else
- *
- * This program demonstrates conditional compilation for debug mode.
- * Compile with -DDEBUG flag to enable debug output.
- * Compile without -DDEBUG flag for production mode (no debug output).
- *
- * Compilation Examples:
- *   Debug Mode:      g++ -DDEBUG debug_toggle.cpp -o debug_toggle.exe
- *   Production Mode: g++ debug_toggle.cpp -o debug_toggle.exe
- */
-
+// Program demonstrating conditional compilation for debug mode
 #include <iostream>
 #include <string>
-
-// ============================================================
-// DEBUG.H - Header Section (Feature Toggle Implementation)
-// ============================================================
 
 #ifndef DEBUG_H
 #define DEBUG_H
 
-// Check if DEBUG macro is defined
 #ifdef DEBUG
-// Debug mode: DEBUG_PRINT macro outputs debug information
 #define DEBUG_PRINT(x) std::cout << "[DEBUG] " << x << std::endl
 #define DEBUG_MODE_STATUS "ENABLED"
 #else
-// Production mode: DEBUG_PRINT macro does nothing (empty statement)
 #define DEBUG_PRINT(x) ((void)0)
 #define DEBUG_MODE_STATUS "DISABLED"
 #endif
 
-#endif // DEBUG_H
+#endif
 
-// ============================================================
-// MAIN PROGRAM - Demonstrates Debug Feature Toggle
-// ============================================================
-
-// Sample function to demonstrate debug logging in functions
 int calculateSum(int a, int b)
 {
     DEBUG_PRINT("calculateSum called with a=" << a << ", b=" << b);
@@ -46,7 +23,6 @@ int calculateSum(int a, int b)
     return result;
 }
 
-// Sample function to demonstrate debugging in complex operations
 double divide(double numerator, double denominator)
 {
     DEBUG_PRINT("divide called with numerator=" << numerator
@@ -64,7 +40,6 @@ double divide(double numerator, double denominator)
     return result;
 }
 
-// Sample class to demonstrate debug logging in OOP
 class Calculator
 {
 private:

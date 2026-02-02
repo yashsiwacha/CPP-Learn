@@ -1,112 +1,96 @@
-/*
- * COPY CONSTRUCTOR - Deep Copy vs Shallow Copy
- * ============================================
- * This program demonstrates the importance of implementing a copy constructor
- * when a class manages dynamic memory. It shows the dangers of shallow copying
- * and how to properly implement deep copying.
- * 
- * Learning Objectives:
- * - Understand shallow vs deep copying
- * - Implement copy constructor for dynamic memory
- * - Prevent double-free errors and memory corruption
- * - Recognize when to override default copy constructor
- */
-
+// Program demonstrating deep copy vs shallow copy
 #include <iostream>
 #include <cstring>
 using namespace std;
 
-// ============================================================================
-// CLASS WITH PROPER DEEP COPY (User-Defined Copy Constructor)
-// ============================================================================
-
-class DynamicArray {
+class DynamicArray
+{
 private:
-    int* data;      // Pointer to dynamically allocated array
-    int size;       // Size of the array
+    int *data;
+    int size;
 
 public:
-    // Default Constructor
-    DynamicArray(int s = 5) : size(s) {
+    DynamicArray(int s = 5) : size(s)
+    {
         cout << "\n[Constructor] Allocating memory for " << size << " integers..." << endl;
         data = new int[size];
-        
-        // Initialize with sample values
-        for (int i = 0; i < size; i++) {
-            data[i] = (i + 1) * 10;  // 10, 20, 30, 40, 50
+
+        for (int i = 0; i < size; i++)
+        {
+            data[i] = (i + 1) * 10;
         }
-        
+
         cout << "[Constructor] Memory allocated at address: " << data << endl;
         cout << "[Constructor] Array initialized with values: ";
         display();
     }
 
-    // Copy Constructor (Deep Copy)
-    DynamicArray(const DynamicArray& source) {
+    // Copy Constructor - Deep Copy
+    DynamicArray(const DynamicArray &source)
+    {
         cout << "\n[Copy Constructor] Creating deep copy..." << endl;
-        
-        // Allocate NEW memory for this object
+
         size = source.size;
         data = new int[size];
-        
-        // Copy each element from source to new memory
-        for (int i = 0; i < size; i++) {
+
+        for (int i = 0; i < size; i++)
+        {
             data[i] = source.data[i];
         }
-        
+
         cout << "[Copy Constructor] New memory allocated at: " << data << endl;
         cout << "[Copy Constructor] Source memory was at: " << source.data << endl;
         cout << "[Copy Constructor] Deep copy completed successfully!" << endl;
     }
 
-    // Destructor
-    ~DynamicArray() {
+    ~DynamicArray()
+    {
         cout << "\n[Destructor] Releasing memory at address: " << data << endl;
         delete[] data;
         cout << "[Destructor] Memory freed successfully!" << endl;
     }
 
-    // Display array contents
-    void display() const {
-        for (int i = 0; i < size; i++) {
+    void display() const
+    {
+        for (int i = 0; i < size; i++)
+        {
             cout << data[i] << " ";
         }
         cout << endl;
     }
 
-    // Modify array values
-    void modify(int index, int value) {
-        if (index >= 0 && index < size) {
+    void modify(int index, int value)
+    {
+        if (index >= 0 && index < size)
+        {
             data[index] = value;
         }
     }
 
-    // Get array address (for demonstration)
-    int* getAddress() const {
+    int *getAddress() const
+    {
         return data;
     }
 };
 
-
-// ============================================================================
-// CLASS WITHOUT PROPER COPY CONSTRUCTOR (Shallow Copy - DANGEROUS!)
-// ============================================================================
-
-class ShallowArray {
+class ShallowArray
+{
 private:
-    int* data;
+    int *data;
     int size;
 
 public:
     // Default Constructor
-    ShallowArray(int s = 5) : size(s) {
+    ShallowArray(int s = 5) : size(s)
+    {
         cout << "\n[Shallow Constructor] Allocating memory for " << size << " integers..." << endl;
         data = new int[size];
-        
-        for (int i = 0; i < size; i++) {
-            data[i] = (i + 1) * 100;  // 100, 200, 300, 400, 500
+
+        for (int i = 0; i < size; i++)
+        {
+            data[i] = (i + 1) * 100; // 100, 200, 300, 400, 500
         }
-        
+
         cout << "[Shallow Constructor] Memory at: " << data << endl;
     }
 
@@ -115,36 +99,42 @@ public:
     // This means it copies the pointer value, not the data!
 
     // Destructor
-    ~ShallowArray() {
+    ~ShallowArray()
+    {
         cout << "\n[Shallow Destructor] Attempting to free memory at: " << data << endl;
-        delete[] data;  // DANGER! May cause double-free error!
+        delete[] data; // DANGER! May cause double-free error!
         cout << "[Shallow Destructor] Memory freed!" << endl;
     }
 
-    void display() const {
-        for (int i = 0; i < size; i++) {
+    void display() const
+    {
+        for (int i = 0; i < size; i++)
+        {
             cout << data[i] << " ";
         }
         cout << endl;
     }
 
-    void modify(int index, int value) {
-        if (index >= 0 && index < size) {
+    void modify(int index, int value)
+    {
+        if (index >= 0 && index < size)
+        {
             data[index] = value;
         }
     }
 
-    int* getAddress() const {
+    int *getAddress() const
+    {
         return data;
     }
 };
-
 
 // ============================================================================
 // DEMONSTRATION FUNCTIONS
 // ============================================================================
 
-void demonstrateDeepCopy() {
+void demonstrateDeepCopy()
+{
     cout << "\n========================================" << endl;
     cout << "DEMONSTRATION 1: DEEP COPY (SAFE)" << endl;
     cout << "========================================" << endl;
@@ -153,7 +143,7 @@ void demonstrateDeepCopy() {
     DynamicArray obj1(5);
 
     cout << "\n--- Creating copy using copy constructor (obj2) ---" << endl;
-    DynamicArray obj2 = obj1;  // Copy constructor is called
+    DynamicArray obj2 = obj1; // Copy constructor is called
 
     cout << "\n--- Verifying memory addresses ---" << endl;
     cout << "obj1 data address: " << obj1.getAddress() << endl;
@@ -161,23 +151,27 @@ void demonstrateDeepCopy() {
     cout << "Are they different? " << (obj1.getAddress() != obj2.getAddress() ? "YES (Good!)" : "NO (Bad!)") << endl;
 
     cout << "\n--- Initial values ---" << endl;
-    cout << "obj1: "; obj1.display();
-    cout << "obj2: "; obj2.display();
+    cout << "obj1: ";
+    obj1.display();
+    cout << "obj2: ";
+    obj2.display();
 
     cout << "\n--- Modifying obj1 (changing index 2 to 999) ---" << endl;
     obj1.modify(2, 999);
 
     cout << "\n--- After modification ---" << endl;
-    cout << "obj1: "; obj1.display();
-    cout << "obj2: "; obj2.display();
+    cout << "obj1: ";
+    obj1.display();
+    cout << "obj2: ";
+    obj2.display();
     cout << "\nNotice: obj2 is NOT affected! This is DEEP COPY." << endl;
 
     cout << "\n--- Objects will be destroyed when going out of scope ---" << endl;
     // Destructors will be called automatically
 }
 
-
-void demonstrateShallowCopy() {
+void demonstrateShallowCopy()
+{
     cout << "\n\n========================================" << endl;
     cout << "DEMONSTRATION 2: SHALLOW COPY (DANGEROUS!)" << endl;
     cout << "========================================" << endl;
@@ -186,25 +180,29 @@ void demonstrateShallowCopy() {
     ShallowArray sObj1(5);
 
     cout << "\n--- Creating copy using DEFAULT copy constructor (sObj2) ---" << endl;
-    ShallowArray sObj2 = sObj1;  // Default copy constructor (shallow copy!)
+    ShallowArray sObj2 = sObj1; // Default copy constructor (shallow copy!)
 
     cout << "\n--- Verifying memory addresses ---" << endl;
     cout << "sObj1 data address: " << sObj1.getAddress() << endl;
     cout << "sObj2 data address: " << sObj2.getAddress() << endl;
     cout << "Are they the SAME? " << (sObj1.getAddress() == sObj2.getAddress() ? "YES (PROBLEM!)" : "NO") << endl;
-    
+
     cout << "\n⚠️  WARNING: Both objects point to the SAME memory!" << endl;
 
     cout << "\n--- Initial values ---" << endl;
-    cout << "sObj1: "; sObj1.display();
-    cout << "sObj2: "; sObj2.display();
+    cout << "sObj1: ";
+    sObj1.display();
+    cout << "sObj2: ";
+    sObj2.display();
 
     cout << "\n--- Modifying sObj1 (changing index 2 to 777) ---" << endl;
     sObj1.modify(2, 777);
 
     cout << "\n--- After modification ---" << endl;
-    cout << "sObj1: "; sObj1.display();
-    cout << "sObj2: "; sObj2.display();
+    cout << "sObj1: ";
+    sObj1.display();
+    cout << "sObj2: ";
+    sObj2.display();
     cout << "\n⚠️  DANGER: sObj2 is also affected! They share the same memory!" << endl;
 
     cout << "\n--- Objects will be destroyed when going out of scope ---" << endl;
@@ -214,14 +212,15 @@ void demonstrateShallowCopy() {
     // This is a DOUBLE-FREE bug - very dangerous!
 }
 
-
-void demonstrateCopyInFunction() {
+void demonstrateCopyInFunction()
+{
     cout << "\n\n========================================" << endl;
     cout << "DEMONSTRATION 3: COPY IN FUNCTION CALLS" << endl;
     cout << "========================================" << endl;
 
     // Lambda function that takes object by value (makes a copy)
-    auto processArray = [](DynamicArray arr) {
+    auto processArray = [](DynamicArray arr)
+    {
         cout << "\n[Inside Function] Object copied into function parameter" << endl;
         cout << "[Inside Function] Array address: " << arr.getAddress() << endl;
         cout << "[Inside Function] Modifying the copy..." << endl;
@@ -247,12 +246,12 @@ void demonstrateCopyInFunction() {
     cout << "\nNotice: Original is unchanged! Copy constructor protected it." << endl;
 }
 
-
 // ============================================================================
 // MAIN FUNCTION
 // ============================================================================
 
-int main() {
+int main()
+{
     cout << "╔════════════════════════════════════════════════════════╗" << endl;
     cout << "║     COPY CONSTRUCTOR & DEEP COPY DEMONSTRATION        ║" << endl;
     cout << "╚════════════════════════════════════════════════════════╝" << endl;
@@ -260,14 +259,16 @@ int main() {
     // Demonstration 1: Proper deep copy with user-defined copy constructor
     demonstrateDeepCopy();
 
-    cout << "\n\n" << string(60, '=') << endl;
+    cout << "\n\n"
+         << string(60, '=') << endl;
     cout << "Press Enter to continue to Shallow Copy demonstration..." << endl;
     cin.get();
 
     // Demonstration 2: Shallow copy problem (compiler-generated copy constructor)
     demonstrateShallowCopy();
 
-    cout << "\n\n" << string(60, '=') << endl;
+    cout << "\n\n"
+         << string(60, '=') << endl;
     cout << "Press Enter to continue to Function Call demonstration..." << endl;
     cin.get();
 
@@ -306,33 +307,33 @@ int main() {
     cout << "       // Copy data from source" << endl;
     cout << "   }" << endl;
 
-    cout << "\n\n" << string(60, '=') << endl;
+    cout << "\n\n"
+         << string(60, '=') << endl;
     cout << "Program completed successfully!" << endl;
     cout << string(60, '=') << endl;
 
     return 0;
 }
 
-
 /*
  * EXPECTED OUTPUT EXPLANATION:
  * ============================
- * 
+ *
  * Deep Copy (Safe):
  * - Two different memory addresses for obj1 and obj2
  * - Modifying one doesn't affect the other
  * - Clean destruction without double-free
- * 
+ *
  * Shallow Copy (Dangerous):
  * - Same memory address for both objects
  * - Modifying one affects the other
  * - Double-free error when both destructors run
- * 
+ *
  * Function Call:
  * - Copy constructor called when passing by value
  * - Function gets its own copy with separate memory
  * - Original remains unaffected
- * 
+ *
  * COMMON INTERVIEW QUESTIONS:
  * ==========================
  * 1. What is the difference between shallow and deep copy?
@@ -340,7 +341,7 @@ int main() {
  * 3. What is the Rule of Three?
  * 4. What happens if you don't define a copy constructor for a class with dynamic memory?
  * 5. How does pass-by-value trigger the copy constructor?
- * 
+ *
  * PRACTICE EXERCISES:
  * ==================
  * 1. Add a copy assignment operator to DynamicArray class

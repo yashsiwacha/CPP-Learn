@@ -1,56 +1,48 @@
+// Phone Directory - dynamic contact management using pointers
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
+// Structure to store contact information
 typedef struct Contact
 {
     char name[50];
     char phone_number[20];
 } Contact;
 
-/**
- * addContact - Adds a new contact to the directory
- * @contacts_array: Pointer to the contacts array
- * @current_size: Pointer to current number of contacts
- * @new_contact: Pointer to the new contact to add
- *
- * Returns: Pointer to the reallocated array, or NULL on failure
- */
+// Function to add a new contact to the dynamic array
+// Reallocates memory to accommodate new contact
 Contact *addContact(Contact *contacts_array, int *current_size, const Contact *new_contact)
 {
-    // Allocate new memory for one more contact
+    // Allocate new array with space for one more contact
     Contact *new_array = (Contact *)malloc((*current_size + 1) * sizeof(Contact));
 
     if (new_array == NULL)
     {
         printf("Error: Memory allocation failed\n");
-        return contacts_array; // Return original pointer if malloc fails
+        return contacts_array; // Return old array unchanged
     }
 
-    // Copy existing contacts from old array to new array
+    // Copy existing contacts to new array
     for (int i = 0; i < *current_size; i++)
     {
         new_array[i] = contacts_array[i];
     }
 
-    // Add the new contact at the end
+    // Add new contact at the end
     new_array[*current_size] = *new_contact;
-    (*current_size)++;
+    (*current_size)++; // Increment size
 
-    // Free the old array (if it exists)
+    // Free old array memory
     if (contacts_array != NULL)
     {
         free(contacts_array);
     }
 
-    return new_array;
+    return new_array; // Return pointer to new array
 }
 
-/**
- * displayContacts - Displays all contacts in the directory
- * @contacts_array: Pointer to the contacts array
- * @size: Number of contacts
- */
+// Function to display all contacts in the directory
 void displayContacts(const Contact *contacts_array, int size)
 {
     if (size == 0)
@@ -69,16 +61,10 @@ void displayContacts(const Contact *contacts_array, int size)
     printf("=====================================\n");
 }
 
-/**
- * findContact - Searches for a contact by name
- * @contacts_array: Pointer to the contacts array
- * @size: Number of contacts
- * @name: Name to search for
- *
- * Returns: Pointer to contact if found, NULL otherwise
- */
+// Function to search for a contact by name
 Contact *findContact(Contact *contacts_array, int size, const char *name)
 {
+    // Linear search through array
     for (int i = 0; i < size; i++)
     {
         if (strcmp(contacts_array[i].name, name) == 0)
@@ -89,13 +75,6 @@ Contact *findContact(Contact *contacts_array, int size, const char *name)
     return NULL;
 }
 
-/**
- * cleanupContacts - Frees all allocated memory for contacts
- * @contacts_array: Pointer to the contacts array to free
- * @size: Number of contacts
- *
- * Returns: void
- */
 void cleanupContacts(Contact **contacts_array, int *size)
 {
     if (*contacts_array != NULL)

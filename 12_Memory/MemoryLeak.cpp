@@ -1,4 +1,4 @@
-// Program to Detect Memory Leaks Using Overloaded new and delete Operators
+// Program to detect memory leaks using overloaded new and delete operators
 #include <iostream>
 #include <map>
 #include <iomanip>
@@ -8,28 +8,25 @@ using namespace std;
 class Tracker
 {
 private:
-    static int allocation_count;            // Total allocations made
-    static int deallocation_count;          // Total deallocations made
-    static int active_allocations;          // Current active allocations
-    static int object_id_counter;           // Counter for assigning unique IDs
-    static map<void *, int> allocation_map; // Maps memory addresses to object IDs
+    static int allocation_count;
+    static int deallocation_count;
+    static int active_allocations;
+    static int object_id_counter;
+    static map<void *, int> allocation_map;
 
-    int object_id; // Unique identifier for each object
+    int object_id;
 
 public:
-    // Constructor to assign unique ID
     Tracker() : object_id(++object_id_counter)
     {
         cout << "  [Constructor] Tracker object ID #" << object_id << " initialized" << endl;
     }
 
-    // Destructor
     ~Tracker()
     {
         cout << "  [Destructor] Tracker object ID #" << object_id << " destroyed" << endl;
     }
 
-    // Overloaded operator new
     void *operator new(size_t size)
     {
         void *ptr = ::operator new(size);
@@ -41,13 +38,11 @@ public:
         cout << "  Memory address: " << ptr << endl;
         cout << "  Active allocations: " << active_allocations << endl;
 
-        // Store the allocation
         allocation_map[ptr] = allocation_count;
 
         return ptr;
     }
 
-    // Overloaded operator delete
     void operator delete(void *ptr)
     {
         if (ptr == nullptr)
@@ -59,7 +54,6 @@ public:
         cout << "\n[DEALLOCATION #" << deallocation_count << "]" << endl;
         cout << "  Memory freed at address: " << ptr << endl;
 
-        // Remove from allocation map
         auto it = allocation_map.find(ptr);
         if (it != allocation_map.end())
         {
@@ -72,7 +66,6 @@ public:
         ::operator delete(ptr);
     }
 
-    // Static method to display leak report
     static void display_leak_report()
     {
         cout << "\n"

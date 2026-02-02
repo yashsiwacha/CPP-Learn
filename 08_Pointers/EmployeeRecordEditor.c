@@ -9,12 +9,6 @@ struct employee
     float salary;
 };
 
-/**
- * printEmp - Displays employee information
- * @emp: Pointer to employee structure
- *
- * Prints employee name, ID, and salary in formatted output
- */
 void printEmp(struct employee *emp)
 {
     printf("Employee name : %s\n", emp->name);
@@ -22,14 +16,6 @@ void printEmp(struct employee *emp)
     printf("Employee Salary : %.2f\n", emp->salary);
 }
 
-/**
- * main - Entry point for employee record editor
- *
- * Allocates memory for employee record, accepts input,
- * allows salary update, and properly manages memory
- *
- * Return: 0 on success, 1 on error
- */
 int main()
 {
     struct employee *empPtr = (struct employee *)malloc(sizeof(struct employee));
@@ -41,7 +27,6 @@ int main()
     printf("Enter employee name (no spaces): ");
     scanf("%49s", empPtr->name);
 
-    // Validate name is not empty
     if (empPtr->name[0] == '\0')
     {
         printf("Error: Name cannot be empty.\n");

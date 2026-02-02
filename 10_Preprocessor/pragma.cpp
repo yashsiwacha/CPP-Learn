@@ -1,3 +1,4 @@
+// Program demonstrating #pragma directives
 #include <iostream>
 #pragma message("Compiling pragma.cpp - Start")
 

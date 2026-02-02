@@ -1,60 +1,22 @@
-/*
- * Simple Configurable Calculator - Function Pointer Demonstration
- *
- * This program demonstrates how to use function pointers to dynamically
- * select and call different arithmetic operations at runtime.
- *
- * Learning Objectives:
- * - Declare function pointer variables
- * - Assign function addresses to pointers
- * - Call functions indirectly through pointers
- * - Understand runtime function selection
- */
-
+// Simple Configurable Calculator - Function Pointer Demonstration
 #include <stdio.h>
 #include <stdlib.h>
 
-// ==================== Arithmetic Function Definitions ====================
-
-/*
- * Function: add
- * Purpose: Adds two integers
- * Parameters: a, b - integers to be added
- * Returns: Sum of a and b
- */
 int add(int a, int b)
 {
     return a + b;
 }
 
-/*
- * Function: subtract
- * Purpose: Subtracts second integer from first
- * Parameters: a, b - integers where b is subtracted from a
- * Returns: Difference of a and b
- */
 int subtract(int a, int b)
 {
     return a - b;
 }
 
-/*
- * Function: multiply
- * Purpose: Multiplies two integers
- * Parameters: a, b - integers to be multiplied
- * Returns: Product of a and b
- */
 int multiply(int a, int b)
 {
     return a * b;
 }
 
-/*
- * Function: divide
- * Purpose: Divides first integer by second (integer division)
- * Parameters: a, b - integers where a is divided by b
- * Returns: Quotient of a and b (0 if b is 0 to avoid division by zero)
- */
 int divide(int a, int b)
 {
     if (b == 0)
@@ -171,8 +133,16 @@ int main()
 
     // Create an array of function pointers
     int (*operations[4])(int, int) = {add, subtract, multiply, divide};
-    const char *operation_names[] = {"Addition", "Subtraction", "Multiplication", "Division"};
-
+    char *operation_names = {"Addition", "Subtraction", "Multiplication", "Division"};
+    char *operation_names2 = {"Addition", "Subtraction", "Multiplication", "Division"};
+    operation_names = operation_names2;
+    const char *ptr = "a";
+    const char *const ptr2 = "b";
+    char *ptr3 = "c";
+    ptr = ptr3;
+    ptr2 = ptr3;
+    *ptr = 'a';
+    *ptr2 = 'd';
     // Test all operations using the dispatch table
     int test_a = 20, test_b = 4;
     printf("Testing with numbers: %d and %d\n\n", test_a, test_b);

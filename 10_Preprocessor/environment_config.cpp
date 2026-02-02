@@ -1,30 +1,8 @@
-/*
- * environment_config.cpp - Environment-Specific Constants Using Macros
- *
- * This program demonstrates:
- * 1. Using preprocessor directives (#if, #elif, #else) for conditional compilation
- * 2. Environment-specific configuration at compile time
- * 3. Build-time environment selection using compiler flags
- *
- * Compilation Instructions:
- * ========================
- * Development:  C:\mingw64\bin\g++.exe -DDEV environment_config.cpp -o ..\build\env_dev.exe
- * Testing:      C:\mingw64\bin\g++.exe -DTEST environment_config.cpp -o ..\build\env_test.exe
- * Production:   C:\mingw64\bin\g++.exe environment_config.cpp -o ..\build\env_prod.exe
- *
- * The -D flag defines a macro during compilation:
- * - -DDEV defines the DEV macro
- * - -DTEST defines the TEST macro
- * - No flag defaults to production environment
- */
-
+// Program demonstrating environment-specific configuration using macros
 #include <iostream>
 #include <cstdio>
 
 using namespace std;
-
-// Environment-Specific Configuration
-// These constants change based on the environment macro defined during compilation
 
 #if defined(DEV)
 #define API_URL "http://localhost"
@@ -43,7 +21,6 @@ using namespace std;
 #define LOG_LEVEL "ERROR"
 #endif
 
-// Display environment configuration
 void displayConfiguration()
 {
     printf("╔═════════════════════════════════════════╗\n");
@@ -57,7 +34,6 @@ void displayConfiguration()
     printf("\n");
 }
 
-// Simulate environment-specific behavior
 void simulateEnvironmentBehavior()
 {
     cout << "Simulating environment-specific behavior:\n";

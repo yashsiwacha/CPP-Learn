@@ -1,24 +1,30 @@
-//Developing a program for calculating simple interst.
+// Program for calculating simple interest.
 #include <iostream>
 using namespace std;
 
-//Function for calculating simple interest.
-float calculateSimpleInterest(float principal_amount, float rate_of_interest, float time_period){
-        return (principal_amount*rate_of_interest*time_period)/100;
+// Formula: SI = (P × R × T) / 100
+// P = Principal amount, R = Rate of interest, T = Time period
+float calculateSimpleInterest(float principal_amount, float rate_of_interest, float time_period)
+{
+    return (principal_amount * rate_of_interest * time_period) / 100;
 }
 
-int main(){
-    //Declaring the variable for components of interest.
-    float principal_amount , time_period, rate_of_interest;
-    //Taking input from the user.
+int main()
+{
+    float principal_amount, time_period, rate_of_interest;
+
+    // Get input from user
     cout << "Enter the principal amount: ";
     cin >> principal_amount;
     cout << "Enter the Rate Of Interest: ";
     cin >> rate_of_interest;
     cout << "Enter the time period: ";
     cin >> time_period;
-    
-    float result = calculateSimpleInterest(principal_amount,rate_of_interest,time_period);
+
+    // Calculate simple interest using the formula
+    float result = calculateSimpleInterest(principal_amount, rate_of_interest, time_period);
+
+    // Display results
     cout << "Principal Amount : " << principal_amount << endl;
     cout << "Rate Of Interest : " << rate_of_interest << "%" << endl;
     cout << "Time period : " << time_period << endl;

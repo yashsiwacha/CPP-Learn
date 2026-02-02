@@ -1,9 +1,9 @@
+// Employee Salary Slip Generator
 #include <iostream>
 #include <cstdio>
 #include <cstring>
 using namespace std;
 
-// Employee structure definition
 struct Employee
 {
     int empId;
@@ -11,7 +11,6 @@ struct Employee
     float basicSalary;
 };
 
-// Function to create initial employee data (optional - for testing)
 void createEmployeeData()
 {
     FILE *file = fopen("employee.dat", "wb");
@@ -31,20 +30,18 @@ void createEmployeeData()
         cout << "\nEmployee " << (i + 1) << ":" << endl;
         cout << "Enter Employee ID: ";
         cin >> emp.empId;
-        cin.ignore(); // Clear the newline from buffer
+        cin.ignore();
         cout << "Enter Employee Name: ";
         cin.getline(emp.name, 100);
         cout << "Enter Basic Salary: ";
         cin >> emp.basicSalary;
 
-        // Validate basic salary
         if (emp.basicSalary <= 0)
         {
             cout << "Error: Basic salary must be positive. Skipping this employee." << endl;
             continue;
         }
 
-        // Write employee record to binary file
         fwrite(&emp, sizeof(Employee), 1, file);
         cout << "Employee record added successfully!" << endl;
     }
@@ -53,7 +50,6 @@ void createEmployeeData()
     cout << "\nEmployee data file created successfully!" << endl;
 }
 
-// Function to process employee records and generate salary slips
 void processEmployeeRecords()
 {
     FILE *file = fopen("employee.dat", "rb");
@@ -70,19 +66,15 @@ void processEmployeeRecords()
     cout << "\nProcessing employee records..." << endl;
     cout << "======================================" << endl;
 
-    // Read each employee record from binary file
     while (fread(&emp, sizeof(Employee), 1, file) == 1)
     {
-        // Calculate salary components
-        float DA = emp.basicSalary * 0.2f;  // Dearness Allowance (20%)
-        float HRA = emp.basicSalary * 0.1f; // House Rent Allowance (10%)
+        float DA = emp.basicSalary * 0.2f;
+        float HRA = emp.basicSalary * 0.1f;
         float netSalary = emp.basicSalary + DA + HRA;
 
-        // Generate filename for salary slip
         char fileName[50];
         sprintf(fileName, "emp%d_slip.txt", emp.empId);
 
-        // Create and write salary slip to text file
         FILE *slipFile = fopen(fileName, "w");
         if (slipFile == NULL)
         {
@@ -90,7 +82,6 @@ void processEmployeeRecords()
             continue;
         }
 
-        // Write formatted salary slip
         fprintf(slipFile, "=========================================\n");
         fprintf(slipFile, "       EMPLOYEE SALARY SLIP\n");
         fprintf(slipFile, "=========================================\n\n");
@@ -106,7 +97,6 @@ void processEmployeeRecords()
 
         fclose(slipFile);
 
-        // Display confirmation
         cout << "Salary slip generated for " << emp.name
              << " (ID: " << emp.empId << ") -> " << fileName << endl;
         count++;
@@ -123,7 +113,6 @@ void processEmployeeRecords()
     }
 }
 
-// Function to display employee records (for verification)
 void displayEmployeeRecords()
 {
     FILE *file = fopen("employee.dat", "rb");
