@@ -22,6 +22,25 @@
                 "isDefault": true
             },
             "detail": "Compiles C++ files and outputs to build folder"
+        },
+        {
+            "label": "C++: build with AddressSanitizer",
+            "type": "shell",
+            "command": "g++",
+            "args": [
+                "-g",
+                "-fsanitize=address",
+                "${file}",
+                "-o",
+                "${fileDirname}/${fileBasenameNoExtension}.asan"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": [
+                "$gcc"
+            ]
         }
     ],
     "version": "2.0.0"
