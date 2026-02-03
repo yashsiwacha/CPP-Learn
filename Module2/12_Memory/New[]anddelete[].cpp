@@ -93,7 +93,7 @@ int main()
     cout << "   - malloc: Requires explicit size calculation using sizeof()" << endl;
     cout << "\n";
     cout << "5. FAILURE HANDLING:" << endl;
-    cout << "   - new[]: Throws std::bad_alloc exception on failure" << endl;
+    cout << "   - new[]: Throws  bad_alloc exception on failure" << endl;
     cout << "   - malloc: Returns NULL on failure" << endl;
     cout << "\n";
     cout << "6. OPERATOR OVERLOADING:" << endl;

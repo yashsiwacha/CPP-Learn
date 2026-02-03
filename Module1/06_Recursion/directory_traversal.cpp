@@ -3,7 +3,7 @@
 #include <filesystem>
 #include <string>
 using namespace std;
-namespace fs = std::filesystem;
+namespace fs = filesystem;
 
 // Recursively traverse directory tree
 void recursiveDirectoryTraversal(const char *path, int depth = 0)

@@ -5,7 +5,7 @@
 #endif
 
 #ifdef DEBUG
-#define DEBUG_PRINT(x) std::cout << x << std::endl;
+#define DEBUG_PRINT(x) cout << x << endl;
 #else
 #define DEBUG_PRINT(x)
 #endif

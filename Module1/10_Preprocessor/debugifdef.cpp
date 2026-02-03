@@ -21,7 +21,7 @@ using namespace std;
 
 int main()
 {
-    std::cout << "Program started." << std::endl;
+    cout << "Program started." << endl;
 
     // This will print only if DEBUG is defined
     DEBUG_PRINT("Debugging is enabled.");
@@ -29,13 +29,13 @@ int main()
 
     // Regular C++ code
     int x = 42;
-    std::cout << "Value of x: " << x << std::endl;
+    cout << "Value of x: " << x << endl;
 
 #ifdef DEBUG
-    std::cout << "[DEBUG]: Value of x: " << x << std::endl;
+    cout << "[DEBUG]: Value of x: " << x << endl;
 #endif
 
-    std::cout << "Program finished." << std::endl;
+    cout << "Program finished." << endl;
 
     return 0;
 }

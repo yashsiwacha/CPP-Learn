@@ -9,13 +9,13 @@
 void detectPlatform()
 {
 #if defined(WINDOWS)
-    std::cout << "This is a Windows operating system." << std::endl;
+    cout << "This is a Windows operating system." << endl;
 #elif defined(LINUX)
-    std::cout << "This is a Linux operating system." << std::endl;
+    cout << "This is a Linux operating system." << endl;
 #elif defined(MAC)
-    std::cout << "This is a macOS operating system." << std::endl;
+    cout << "This is a macOS operating system." << endl;
 #else
-    std::cout << "Unknown OS" << std::endl;
+    cout << "Unknown OS" << endl;
 #endif
 }
 
