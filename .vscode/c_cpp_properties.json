@@ -3,8 +3,7 @@
         {
             "name": "windows-gcc-x64",
             "includePath": [
-                "${workspaceFolder}/**",
-                "${workspaceFolder}/10_Preprocessor"
+                "${workspaceFolder}/**"
             ],
             "defines": [
                 "_DEBUG",
