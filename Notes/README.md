@@ -121,7 +121,15 @@ Abstract classes, pure virtual functions, and polymorphism.
 - **Prerequisites:** Encapsulation
 - **Related Topics:** Interfaces, virtual functions, dynamic binding, design patterns
 
-#### 14. [Memory Management](Module2/12_Memory/README.md) ⚠️
+#### 14. [Inheritance](Module2/15_Inheritance/README.md)
+
+Code reuse through IS-A relationships, inheritance types, and virtual inheritance.
+
+- **Prerequisites:** OOP Fundamentals, Encapsulation, Abstraction
+- **Related Topics:** Single, multiple, multilevel, hierarchical inheritance, diamond problem, virtual inheritance
+- **Note:** Enables polymorphism and hierarchical design
+
+#### 15. [Memory Management](Module2/12_Memory/README.md) ⚠️
 
 Dynamic allocation, memory leaks, RAII, and smart pointers.
 
@@ -134,12 +142,12 @@ Dynamic allocation, memory leaks, RAII, and smart pointers.
 ## 🎯 How to Use These Notes
 
 **For Complete Beginners:**
-Follow the exact sequence 1→14. Don't skip topics even if they seem simple.
+Follow the exact sequence 1→15. Don't skip topics even if they seem simple.
 
 **For Programmers New to C++:**
 
 - Quick review: Topics 1-3
-- Focus on: Topics 6 (Pointers), 9 (Preprocessor), 11-14 (OOP)
+- Focus on: Topics 6 (Pointers), 9 (Preprocessor), 11-15 (OOP)
 
 **For Making Paper Notes:**
 Each topic contains:
@@ -176,7 +184,7 @@ Arrays → Conditionals → Functions → Mathematical
                            ↓
                    Encapsulation → Abstraction
                            ↓          ↓
-                      Memory Management
+                      Inheritance → Memory Management
 ```
 
 **Key:**
