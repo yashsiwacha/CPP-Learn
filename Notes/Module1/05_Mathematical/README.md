@@ -1,8 +1,93 @@
 # Mathematical Programming
 
-## Overview
+## 📋 Study Plan
 
-Mathematical programming involves implementing mathematical formulas, series, and algorithms in code.
+**Time Needed:** 3-4 hours  
+**Difficulty:** ⭐⭐⭐ (Medium-Hard)  
+**Prerequisites:** Loops, functions, basic math
+
+**What you'll learn:** Implement mathematical formulas and series!
+
+---
+
+## 🔷 Definition (Memorize This!)
+
+```
+┌──────────────────────────────────────────────────────────┐
+│ MATHEMATICAL PROGRAMMING = Converting mathematical       │
+│                            formulas and series into code │
+│                                                          │
+│ Applications:                                            │
+│  • Scientific calculations                               │
+│  • Engineering simulations                               │
+│  • Financial modeling                                    │
+│  • Physics and chemistry                                 │
+└──────────────────────────────────────────────────────────┘
+```
+
+## Key Concepts
+
+### 1. Exponential Series ([exponential_series.cpp](../../Module1/05_Mathematical/exponential_series.cpp))
+
+**Formula:** $e^x = 1 + x + \frac{x^2}{2!} + \frac{x^3}{3!} + ...$
+
+**Key Ideas:**
+
+- Loop-based term accumulation
+- Incremental calculation: `term *= x / i`
+- Factorial calculation inline
+- More terms = better accuracy
+
+### 2. Sine Series ([sine_series.cpp](../../Module1/05_Mathematical/sine_series.cpp))
+
+**Formula:** $\sin(x) = x - \frac{x^3}{3!} + \frac{x^5}{5!} - \frac{x^7}{7!} + ...$
+
+**Key Ideas:**
+
+- Alternating signs: +, -, +, -
+- Only odd powers: x, x³, x⁵
+- Input must be in radians
+- Use `term *= -x * x / ((2*i+2) * (2*i+3))`
+
+---
+
+## Common Series Formulas
+
+| Function   | Formula                                | Convergence |
+| ---------- | -------------------------------------- | ----------- |
+| $e^x$      | $\sum \frac{x^n}{n!}$                  | All x       |
+| $\sin(x)$  | $\sum \frac{(-1)^n x^{2n+1}}{(2n+1)!}$ | All x       |
+| $\cos(x)$  | $\sum \frac{(-1)^n x^{2n}}{(2n)!}$     | All x       |
+| $\ln(1+x)$ | $\sum \frac{(-1)^{n+1} x^n}{n}$        | -1 < x ≤ 1  |
+
+## Optimization Techniques
+
+1. **Avoid Recalculation:** `term = term * x / i` instead of computing from scratch
+2. **Early Termination:** Stop when `|term| < threshold`
+3. **Use Built-in:** `<cmath>` has `exp()`, `sin()`, `cos()` for production
+4. **Double Precision:** Use `double` not `float`
+
+---
+
+## Common Mistakes
+
+```
+┌──────────────────────────────────────────────────────────┐
+│ ❌ Integer division (1/2 = 0, use 1.0/2.0)                │
+│ ❌ Overflow with large factorials                         │
+│ ❌ Wrong units (degrees vs radians for trig)              │
+│ ❌ Insufficient terms (poor approximation)                │
+│ ❌ Precision loss from too many operations                │
+└──────────────────────────────────────────────────────────┘
+```
+
+## Key Takeaways
+
+1. **Incremental Calculation** - Build terms from previous terms
+2. **Convergence** - More terms = better accuracy
+3. **Use Double** - Always use double for mathematical calculations
+4. **Validate** - Compare with standard library functions
+5. **Handle Overflow** - Watch for large factorials or powers
 
 ## Topics Covered
 
@@ -86,24 +171,14 @@ double sine(double x, int terms) {
 
 ### 1. Series Expansion
 
-- Infinite sum representation
-- Approximation using finite terms
+- Infinite sum representation of functions
+- Use finite terms for approximation
 - More terms = better accuracy
-- Used for function computation
 
 ### 2. Factorial
 
-```cpp
-int factorial(int n) {
-    int result = 1;
-    for(int i = 2; i <= n; i++)
-        result *= i;
-    return result;
-}
-```
-
-- n! = n × (n-1) × (n-2) × ... × 2 × 1
-- 0! = 1 (by definition)
+- Definition: n! = n × (n-1) × ... × 2 × 1
+- Special case: 0! = 1
 - Grows very rapidly
 
 ### 3. Power Calculation

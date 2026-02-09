@@ -1,150 +1,274 @@
 # Memory Management in C++
 
-## 📖 How to Study This Topic
+## � Study Plan
 
-**Recommended Approach:**
+**Time Needed:** 6-8 hours  
+**Difficulty:** ⭐⭐⭐⭐ (Hard)  
+**Prerequisites:** Pointers, dynamic allocation
 
-1. Understand stack vs heap conceptually first (draw diagrams)
-2. Practice with small programs - intentionally create and fix memory leaks
-3. Use memory leak detection tools (Valgrind/AddressSanitizer)
-4. Start with raw pointers, then move to smart pointers
-5. Practice RAII pattern with real examples
-
-**Time Investment:** 6-8 hours for concepts, weeks for mastery
-
-**Common Struggles:**
-
-- Forgetting to delete allocated memory
-- Matching new/delete with new[]/delete[]
-- Understanding when to use which smart pointer
-- Debugging segmentation faults
-
-**Pro Tip:** Use AddressSanitizer during practice - it catches memory errors immediately!
-
-```bash
-g++ -fsanitize=address -g program.cpp
-```
-
-**⚠️ Critical:** This is one of the hardest C++ topics. Be patient and practice extensively.
+**⚠️ CRITICAL:** This is one of the hardest C++ topics. Be patient and practice extensively!
 
 ---
 
-## Overview
+## 🔷 Definition (Memorize This!)
 
-Memory management is crucial in C++ as it provides manual control over memory allocation and deallocation, unlike garbage-collected languages.
+```
+┌──────────────────────────────────────────────────────────┐
+│ MEMORY MANAGEMENT = Control over allocation &            │
+│                     deallocation of memory               │
+│                                                          │
+│ Two Regions:                                             │
+│  • STACK   - Automatic, fast, limited (local variables) │
+│  • HEAP    - Manual, slower, large (dynamic allocation)  │
+│                                                          │
+│ Key Operators:                                           │
+│  • new     - Allocate memory on heap                     │
+│  • delete  - Free single object                          │
+│  • delete[] - Free array                                 │
+└──────────────────────────────────────────────────────────┘
+```
 
-## Topics Covered
-
-### Files Reference:
-
-- [ArrayPointer.cpp](../../Module2/12_Memory/ArrayPointer.cpp)
-- [Delete[].cpp](../../Module2/12_Memory/Delete[].cpp)
-- [MemoryLeak.cpp](../../Module2/12_Memory/MemoryLeak.cpp)
-- [MemoryLeakinLoop.cpp](../../Module2/12_Memory/MemoryLeakinLoop.cpp)
-- [MemoryLeakTest.cpp](../../Module2/12_Memory/MemoryLeakTest.cpp)
-- [New[]anddelete[].cpp](../../Module2/12_Memory/New[]anddelete[].cpp)
-
-## Memory Segments
-
-### Memory Layout Visualization:
+## 🎨 Memory Layout [Draw This!]
 
 ```
 High Address
-+------------------+
-|   Command Line   |  (Program arguments)
-|    & Environment |
-+------------------+
-|      Stack       |  ← Grows downward
-|        ↓         |  (Local variables, function calls)
-|                  |
-|                  |
-|        ↑         |
-|      Heap        |  ← Grows upward
-+------------------+  (Dynamic allocation: new/delete)
-|   Uninitialized  |  (BSS segment: uninitialized globals)
-+------------------+
-|   Initialized    |  (Data segment: initialized globals)
-+------------------+
-|   Text/Code      |  (Program instructions - read-only)
-+------------------+
+┌──────────────┐
+│    Stack     │  ← Local variables, function calls
+│      ↓       │     (Automatic, fast, limited)
+│              │
+│      ↑       │
+│    Heap      │  ← new/delete allocations
+└──────────────┘     (Manual, flexible, large)
+│ Global/Static│  ← Global variables
+│    Code      │  ← Program instructions
+└──────────────┘
 Low Address
 ```
 
-### 1. Stack Memory:
+---
 
-- Automatic allocation/deallocation
-- Fast access
-- Limited size (typically 1-8 MB)
-- LIFO (Last In First Out)
-- Stores local variables, function parameters
+## Key Concepts
+
+### 1. Stack vs Heap Memory
+
+| Aspect       | Stack            | Heap                      |
+| ------------ | ---------------- | ------------------------- |
+| Allocation   | Automatic        | Manual (`new`)            |
+| Deallocation | Automatic        | Manual (`delete`)         |
+| Speed        | Very fast        | Slower                    |
+| Size         | Limited (1-8 MB) | Large (system RAM)        |
+| Lifetime     | Function scope   | Until deleted             |
+| Example      | `int x = 10;`    | `int *ptr = new int(10);` |
+
+### 2. Dynamic Memory Allocation
+
+**Single object:**
+
+- Allocate: `int *ptr = new int(10);`
+- Free: `delete ptr;`
+- Always set to nullptr: `ptr = nullptr;`
+
+**Arrays:**
+
+- Allocate: `int *arr = new int[10];`
+- Free: `delete[] arr;` (MUST use delete[], not delete!)
+
+**Critical:** Match `new` with `delete`, and `new[]` with `delete[]`
+
+### 3. Memory Leaks ([MemoryLeak.cpp](../../Module2/12_Memory/MemoryLeak.cpp), [MemoryLeakinLoop.cpp](../../Module2/12_Memory/MemoryLeakinLoop.cpp))
+
+**Definition:** Memory allocated but never freed
+
+**Common causes:**
+
+- Forgetting to delete
+- Losing pointer reference
+- Exception thrown before delete
+- Loop allocations without deallocation
+
+**Example:**
 
 ```cpp
-void function() {
-    int x = 10;        // Allocated on stack
-    char arr[100];     // Allocated on stack
-}  // Automatically deallocated
+int *ptr = new int(10);
+// Forgot delete - MEMORY LEAK!
 ```
 
-### 2. Heap Memory:
+### 4. Common Memory Issues
 
-- Manual allocation/deallocation
-- Slower access than stack
-- Large size (limited by system RAM)
-- Flexible lifetime
-- Allocated using `new` / `delete`
+| Issue            | Description                 | Solution                    |
+| ---------------- | --------------------------- | --------------------------- |
+| Dangling Pointer | Points to freed memory      | Set to nullptr after delete |
+| Memory Leak      | Allocated but never freed   | Always delete what you new  |
+| Double Delete    | Deleting same pointer twice | Set to nullptr after delete |
+| Wild Pointer     | Uninitialized pointer       | Initialize to nullptr       |
+| Use After Free   | Using freed memory          | Don't access after delete   |
+
+### 5. Arrays and Pointers ([ArrayPointer.cpp](../../Module2/12_Memory/ArrayPointer.cpp), [New[]anddelete[].cpp](../../Module2/12_Memory/New[]anddelete[].cpp))
+
+**Dynamic arrays:**
+
+- Syntax: `int *arr = new int[size];`
+- Cleanup: `delete[] arr;` (notice the [])
+- **CRITICAL:** Using `delete arr;` instead of `delete[] arr;` is undefined behavior!
+
+**Example:** [Delete[].cpp](../../Module2/12_Memory/Delete[].cpp)
+
+### 6. 2D Dynamic Arrays
+
+**Method 1 - Array of pointers:**
 
 ```cpp
-int *ptr = new int(10);     // Allocated on heap
-delete ptr;                  // Must manually deallocate
+int **arr = new int*[rows];
+for(int i = 0; i < rows; i++)
+    arr[i] = new int[cols];
+
+// Cleanup: delete each row, then main array
+for(int i = 0; i < rows; i++)
+    delete[] arr[i];
+delete[] arr;
 ```
 
-### 3. Static/Global Memory:
+**Method 2 - Single block:** `int *arr = new int[rows * cols];`
 
-- Exists for entire program lifetime
-- Initialized before main()
-- Deallocated after main()
+### 7. Smart Pointers (C++11)
+
+**Purpose:** Automatic memory management - no manual delete needed!
+
+| Type         | Ownership          | Copy | Use When                  |
+| ------------ | ------------------ | ---- | ------------------------- |
+| `unique_ptr` | Exclusive          | No   | Single owner              |
+| `shared_ptr` | Shared (ref count) | Yes  | Multiple owners           |
+| `weak_ptr`   | Non-owning         | Yes  | Break circular references |
+
+**Syntax:**
+
+- `unique_ptr<int> ptr = make_unique<int>(10);`
+- `shared_ptr<int> ptr = make_shared<int>(10);`
+- Automatically deleted when out of scope!
+
+### 8. RAII Pattern
+
+**Resource Acquisition Is Initialization**
+
+**Concept:** Tie resource lifetime to object lifetime
+
+**Benefits:**
+
+- Automatic cleanup
+- Exception safe
+- No memory leaks
+
+**Example:**
 
 ```cpp
-int globalVar = 100;  // Global memory
-
-void function() {
-    static int staticVar = 50;  // Static memory
-}
+{
+    unique_ptr<int> ptr = make_unique<int>(10);
+    // Use ptr
+} // Automatically deleted here!
 ```
 
-### 4. Code/Text Segment:
+---
 
-- Stores compiled program code
-- Read-only
-- Shared between processes
-
-## Dynamic Memory Allocation
-
-### When to Use Each Allocation Method:
+## Common Mistakes
 
 ```
-Need dynamic memory?
-  │
-  ├─ NO → Use stack (automatic)
-  │       int x = 10;
-  │
-  └─ YES → Size known at compile time?
-           │
-           ├─ YES → Array size fixed?
-           │        │
-           │        ├─ Small (<1KB) → Stack array: int arr[100];
-           │        └─ Large → STL vector or heap array
-           │
-           └─ NO → Use heap allocation
-                   │
-                   ├─ Simple data?
-                   │   └─ Use STL containers (vector, string)
-                   │
-                   └─ Complex management?
-                       ├─ Exclusive ownership → unique_ptr
-                       ├─ Shared ownership → shared_ptr
-                       └─ Manual control → raw pointers (careful!)
+┌──────────────────────────────────────────────────────────┐
+│ ❌ Using delete instead of delete[] for arrays            │
+│ ❌ Forgetting to delete allocated memory (leak)           │
+│ ❌ Double delete (deleting same pointer twice)            │
+│ ❌ Using pointer after delete (dangling pointer)          │
+│ ❌ Not initializing pointers to nullptr (wild pointer)    │
+│ ❌ Losing pointer reference before freeing                │
+└──────────────────────────────────────────────────────────┘
 ```
+
+---
+
+## Memory Leak Detection
+
+**Tools:**
+
+- **AddressSanitizer:** `g++ -fsanitize=address -g program.cpp`
+- **Valgrind (Linux):** `valgrind --leak-check=full ./program`
+- **Visual Studio:** Built-in memory diagnostics
+
+**See:** [MemoryLeakTest.cpp](../../Module2/12_Memory/MemoryLeakTest.cpp)
+
+---
+
+## Best Practices
+
+| Practice                    | Example                                |
+| --------------------------- | -------------------------------------- |
+| Initialize pointers         | `int *ptr = nullptr;`                  |
+| Set to nullptr after delete | `delete ptr; ptr = nullptr;`           |
+| Match new/delete correctly  | `new` ↔ `delete`, `new[]` ↔ `delete[]` |
+| Prefer smart pointers       | `unique_ptr<int> ptr = ...`            |
+| Prefer STL containers       | `vector<int>` instead of `new int[]`   |
+| Check allocation success    | `if(ptr != nullptr)`                   |
+
+---
+
+## Modern C++ Recommendations
+
+**❌ Avoid:**
+
+```cpp
+int *arr = new int[100];
+// ... use arr ...
+delete[] arr;
+```
+
+**✅ Prefer:**
+
+```cpp
+vector<int> arr(100);
+// Automatic cleanup!
+```
+
+**❌ Avoid:**
+
+```cpp
+int *ptr = new int(10);
+// ... use ptr ...
+delete ptr;
+```
+
+**✅ Prefer:**
+
+```cpp
+unique_ptr<int> ptr = make_unique<int>(10);
+// Automatic cleanup!
+```
+
+---
+
+## 🎯 Key Takeaways
+
+1. **Stack** is fast but limited; **heap** is flexible but needs manual management
+2. **Always** match `new` with `delete`, and `new[]` with `delete[]`
+3. **Memory leak** = allocated but never freed (use tools to detect)
+4. Set pointers to **nullptr** after delete to avoid dangling pointers
+5. **Smart pointers** automate memory management (use them in modern C++!)
+6. **Prefer** STL containers (`vector`, `string`) over manual allocation
+   └─ YES → Size known at compile time?
+   │
+   ├─ YES → Array size fixed?
+   │ │
+   │ ├─ Small (<1KB) → Stack array: int arr[100];
+   │ └─ Large → STL vector or heap array
+   │
+   └─ NO → Use heap allocation
+   │
+   ├─ Simple data?
+   │ └─ Use STL containers (vector, string)
+   │
+   └─ Complex management?
+   ├─ Exclusive ownership → unique_ptr
+   ├─ Shared ownership → shared_ptr
+   └─ Manual control → raw pointers (careful!)
+
+````
 
 ### Single Object Allocation:
 
@@ -159,7 +283,7 @@ int *ptr3 = new int();      // Zero-initialized
 if(ptr == nullptr) {
     cerr << "Allocation failed";
 }
-```
+````
 
 #### Using delete:
 
