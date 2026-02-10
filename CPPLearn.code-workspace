@@ -1,0 +1,12 @@
+{
+    "folders": [
+        {
+            "name": "CPPLearn",
+            "path": "."
+        },
+        {
+            "name": "SelfLearn",
+            "path": "../SelfLearn"
+        }
+    ]
+}

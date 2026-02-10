@@ -14,14 +14,14 @@
 
 ```
 ┌──────────────────────────────────────────────────────────┐
-│ FUNCTION = Reusable block of code that performs a       │
+│ FUNCTION = Reusable block of code that performs a        │
 │            specific task                                 │
 │                                                          │
 │ Benefits:                                                │
-│  • Code reusability (write once, use many times)        │
-│  • Modularity (break complex problems into parts)       │
+│  • Code reusability (write once, use many times)         │
+│  • Modularity (break complex problems into parts)        │
 │  • Easy debugging and maintenance                        │
-│  • Reduces code duplication                             │
+│  • Reduces code duplication                              │
 └──────────────────────────────────────────────────────────┘
 ```
 
@@ -30,10 +30,10 @@
 ```
 ┌──────────────────────────────────────────┐
 │  return_type function_name(parameters)   │
-│  {                                        │
+│  {                                       │
 │      // Function body                    │
-│      return value;                        │
-│  }                                        │
+│      return value;                       │
+│  }                                       │
 └──────────────────────────────────────────┘
         ↓           ↓           ↓
    What type   Identifier   Input values
