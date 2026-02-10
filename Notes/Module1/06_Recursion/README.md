@@ -65,6 +65,35 @@
 | Risk        | Stack overflow                  | Infinite loop |
 | Best for    | Trees, graphs, divide & conquer | Simple loops  |
 
+**Use recursion when:**
+
+1. **Problem has recursive structure**
+   - Problem can be broken into smaller similar subproblems
+   - Examples: factorial, Fibonacci, power calculation
+
+2. **Working with tree or graph structures**
+   - Binary trees, file systems, directory traversal
+   - Depth-first search, breadth-first search
+
+3. **Divide and conquer algorithms**
+   - Merge sort, quick sort, binary search
+   - Problem splits into independent subproblems
+
+4. **Backtracking problems**
+   - N-Queens, Sudoku solver, maze solving
+   - Need to explore all possible solutions
+
+5. **Mathematical problems with recurrence relations**
+   - Tower of Hanoi, combinations, permutations
+   - Problems naturally defined recursively
+
+**Avoid recursion when:**
+
+- Simple iterative solution exists
+- Very deep recursion (risk of stack overflow)
+- Performance is critical (iteration is faster)
+- Memory is limited (recursion uses call stack)
+
 ## Optimization Techniques
 
 **1. Memoization (Top-Down):**
