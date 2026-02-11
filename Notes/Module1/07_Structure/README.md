@@ -14,7 +14,7 @@
 
 ```
 ┌──────────────────────────────────────────────────────────┐
-│ STRUCTURE = User-defined datatype that groups           │
+│ STRUCTURE = User-defined datatype that groups            │
 │             variables of DIFFERENT types                 │
 │                                                          │
 │ Purpose:                                                 │
