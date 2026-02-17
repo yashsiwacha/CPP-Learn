@@ -1,15 +1,33 @@
-# Compiled executables
+# CLion / JetBrains IDEs
+.idea/
+cmake-build-*/
+.DS_Store
+
+# Build artifacts
+build/
 *.exe
 *.out
-*.app
-
-# Build directory
-build/*
-!build/.gitkeep
-
-# Object files
 *.o
 *.obj
+*.dll
+*.so
+*.dylib
+*.a
+*.lib
+
+# Compiled Object files
+*.slo
+*.lo
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Executables
+*.app
+*.i*86
+*.x86_64
+*.hex
 
 # Debug files
 *.dSYM/
@@ -17,24 +35,25 @@ build/*
 *.idb
 *.pdb
 
-# VS Code settings (optional - uncomment if you want to exclude)
-# .vscode/
-
 # Temporary files
-*.tmp
-*.temp
 *~
+*.swp
+*.swo
+*.tmp
+tempCodeRunnerFile.*
 
-# OS generated files
-.DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
+# Output files
+*.txt
+!CMakeLists.txt
+!CLION_SETUP_GUIDE.md
+!README.md
+
+# Visual Studio Code
+.vscode/
+*.code-workspace
+
+# OS files
 Thumbs.db
+ehthumbs.db
 Desktop.ini
-
-# Misc
-error.txt
-*.log
+$RECYCLE.BIN/

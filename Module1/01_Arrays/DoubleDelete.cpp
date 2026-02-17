@@ -10,8 +10,8 @@ int main()
     {
         cout << "Value at ptr[" << i << "]: " << ptr[i] << endl; // Output: 1, 2, 3, 4, 5
     }
-    delete[] ptr;  // Deleting the allocated array
-    ptr = nullptr; // Set to nullptr after deletion
-    // delete[] ptr; // Now safe (deleting nullptr is well-defined as no-op)
+    delete[] ptr; // Deleting the allocated array
+    // ptr = nullptr; // Set to nullptr after deletion
+    delete[] ptr; // Now safe (deleting nullptr is well-defined as no-op)
     return 0;
 }
