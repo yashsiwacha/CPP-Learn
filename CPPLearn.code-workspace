@@ -5,11 +5,10 @@
             "path": "."
         },
         {
-            "name": "SelfLearn",
-            "path": "../SelfLearn"
+            "path": "../YaanProject"
         },
         {
-            "path": "../YaanProject"
+            "path": "../DSA-Learning"
         }
     ]
 }

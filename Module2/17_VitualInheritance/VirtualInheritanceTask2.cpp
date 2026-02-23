@@ -1,14 +1,7 @@
 //
 // Created by YashSiwach on 17-02-2026.
 //
-
-class Device
-{
-    int id;
-
-public:
-    virtual
-};/**
+/**
  * Virtual Inheritance - Solution to Diamond Problem
  *
  * This program demonstrates how VIRTUAL INHERITANCE solves the diamond problem:
