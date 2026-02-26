@@ -12,6 +12,12 @@
         },
         {
             "path": "../Backend"
+        },
+        {
+            "path": "../portfolio"
         }
-    ]
+    ],
+    "settings": {
+        "java.compile.nullAnalysis.mode": "automatic"
+    }
 }
