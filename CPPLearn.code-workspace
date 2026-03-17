@@ -18,6 +18,7 @@
         }
     ],
     "settings": {
-        "java.compile.nullAnalysis.mode": "automatic"
+        "java.compile.nullAnalysis.mode": "automatic",
+        "liveServer.settings.multiRootWorkspaceName": "portfolio"
     }
 }
