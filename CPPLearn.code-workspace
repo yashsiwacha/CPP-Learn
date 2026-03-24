@@ -15,10 +15,14 @@
         },
         {
             "path": "../portfolio"
+        },
+        {
+            "path": "../Notification system"
         }
     ],
     "settings": {
         "java.compile.nullAnalysis.mode": "automatic",
-        "liveServer.settings.multiRootWorkspaceName": "portfolio"
+        "liveServer.settings.multiRootWorkspaceName": "portfolio",
+        "java.configuration.updateBuildConfiguration": "automatic"
     }
 }
