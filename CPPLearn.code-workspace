@@ -18,6 +18,15 @@
         },
         {
             "path": "../Notification system"
+        },
+        {
+            "path": "../Interviews"
+        },
+        {
+            "path": "../../Desktop/Auction-System-main"
+        },
+        {
+            "path": "../KafkaProject"
         }
     ],
     "settings": {
