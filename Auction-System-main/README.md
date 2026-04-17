@@ -1,223 +1,175 @@
 # Auction System
 
-A comprehensive auction system built with Spring Boot and MySQL, featuring three types of users: Admin, Seller, and Buyer.
+[![Java](https://img.shields.io/badge/Java-11-1f2937?logo=openjdk&logoColor=white)](https://www.oracle.com/java/)
+[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-1.1.8.RELEASE-166534?logo=springboot&logoColor=white)](https://spring.io/projects/spring-boot)
+[![Template Engine](https://img.shields.io/badge/Thymeleaf-Server%20Rendered-0f766e)](https://www.thymeleaf.org/)
+[![Database](https://img.shields.io/badge/Database-MySQL%20%7C%20PostgreSQL-1d4ed8)](https://www.mysql.com/)
+[![Deploy](https://img.shields.io/badge/Deploy-Render-4c1d95)](https://render.com/)
 
-## Features
+Role-based auction platform built with Spring Boot, Thymeleaf, and JPA. The app supports Admin, Seller, and Buyer workflows with scheduled auction processing and production deployment options.
 
-### Admin Features
-- Approve/reject products for auction
-- Manage users (activate/deactivate)
-- Monitor system statistics
-- View all auctions and bids
+## Quick Navigation
 
-### Seller Features
-- Add products for auction
-- Set starting prices and reserve prices
-- Schedule auction start and end times
-- Track product status and bids
+- [Feature Overview](#feature-overview)
+- [Architecture](#architecture)
+- [Tech Stack](#tech-stack)
+- [Local Setup](#local-setup)
+- [Deployment on Render](#deployment-on-render)
+- [Default Accounts](#default-accounts)
+- [Routes at a Glance](#routes-at-a-glance)
+- [Project Structure](#project-structure)
+- [Troubleshooting](#troubleshooting)
 
-### Buyer Features
-- Browse available auctions
-- Place bids on products
-- Track bidding history
-- Search for specific products
+## Feature Overview
 
-## Technology Stack
+| Role | What You Can Do |
+|---|---|
+| Admin | Approve or reject products, manage users, monitor system activity, manage auction slots |
+| Seller | Add products, configure price and schedule, track product state and bidding activity |
+| Buyer | Browse active auctions, inspect details, place bids, view bid history, search products |
 
-- **Backend**: Spring Boot 1.1.8
-- **Database**: MySQL 8.0
-- **ORM**: Spring Data JPA
-- **Frontend**: Thymeleaf + Bootstrap 5
-- **Build Tool**: Maven
+## Architecture
 
-## Prerequisites
-
-1. **Java 8** or later
-2. **MySQL 8.0** or later
-3. **Maven 3.6** or later
-
-## Setup Instructions
-
-### 1. Database Setup
-
-1. Install MySQL and start the service
-2. Create a database (the application will create it automatically):
-   ```sql
-   CREATE DATABASE auction_system;
-   ```
-3. Update database credentials in `src/main/resources/application.yml`:
-   ```yaml
-   spring:
-     datasource:
-       url: jdbc:mysql://localhost:3306/auction_system?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC
-       username: root
-       password: your_password
-   ```
-
-### 2. Application Setup
-
-1. Clone or download the project
-2. Navigate to the project directory:
-   ```bash
-   cd auction-system
-   ```
-3. Build and run the application:
-   ```bash
-   mvn clean spring-boot:run
-   ```
-
-### 3. Access the Application
-
-Once the application is running, open your browser and go to:
-```
-http://localhost:8080
+```mermaid
+flowchart LR
+      U[Users] --> W[Spring MVC Controllers]
+      W --> S[Service Layer]
+      S --> R[Spring Data JPA Repositories]
+      R --> D[(MySQL or PostgreSQL)]
+      SCH[AuctionScheduler] --> S
+      W --> V[Thymeleaf Views]
 ```
 
-## Security Features
+## Tech Stack
 
-### Password Security
-- **BCrypt Hashing**: All passwords are encrypted using BCrypt with salt
-- **Automatic Migration**: Existing plain text passwords are automatically migrated to hashed format on startup
-- **Password Change**: Users can securely change their passwords through the profile page
-- **Validation**: Password strength requirements (minimum 6 characters)
+| Layer | Technology |
+|---|---|
+| Runtime | Java 11 |
+| Framework | Spring Boot 1.1.8.RELEASE |
+| Web | Spring MVC + Thymeleaf |
+| Data | Spring Data JPA + Hibernate |
+| Databases | MySQL (default), PostgreSQL (prod profile) |
+| Security | Session auth + BCrypt password encoding |
+| Build | Maven |
+| Container | Docker multi-stage build |
 
-### Authentication
-- Session-based authentication
-- Role-based access control (Admin, Seller, Buyer)
-- Secure password validation
+## Local Setup
 
-## Default User Accounts
+### Prerequisites
 
-The application creates the following default accounts:
+1. Java 11+
+2. Maven 3.6+
+3. MySQL 8+ (or PostgreSQL if using profile override)
 
-### Admin Account
-- **Username**: `admin`
-- **Password**: `admin123`
-- **Email**: `admin@auction.com`
+### Run with MySQL (default)
 
-### Sample Seller Account
-- **Username**: `seller1`
-- **Password**: `seller123`
-- **Email**: `seller1@auction.com`
+1. Create database:
 
-### Sample Buyer Account
-- **Username**: `buyer1`
-- **Password**: `buyer123`
-- **Email**: `buyer1@auction.com`
+```sql
+CREATE DATABASE Auction_System;
+```
 
-**Note**: All passwords are securely hashed using BCrypt encryption.
+2. Update datasource values in src/main/resources/application.yml as needed.
+3. Start the app:
 
-## User Workflows
+```bash
+mvn clean spring-boot:run
+```
 
-### For Sellers
-1. Login with seller credentials
-2. Go to "Add Product" to list items for auction
-3. Set product details, starting price, and auction schedule
-4. Wait for admin approval
-5. Monitor bids once approved
+4. Open:
 
-### For Buyers
-1. Login with buyer credentials
-2. Browse "Active Auctions"
-3. View auction details and place bids
-4. Track your bids in "My Bids"
+```text
+http://localhost:9090
+```
 
-### For Admins
-1. Login with admin credentials
-2. Review pending products for approval
-3. Manage users and system settings
-4. Monitor auction activities
+## Deployment on Render
 
-## Database Schema
+This repository already contains:
 
-The application creates the following main tables:
+- render.yaml
+- Dockerfile
+- Procfile
+- build.sh and start.sh
 
-- `users` - Store user information
-- `products` - Store auction products
-- `bids` - Store bid information
+### Recommended env vars
 
-## API Endpoints
+| Variable | Purpose |
+|---|---|
+| SPRING_PROFILES_ACTIVE | Set to prod |
+| DATABASE_URL | Managed DB connection string |
+| DB_USERNAME | DB username |
+| DB_PASSWORD | DB password |
+| PORT | Runtime port injected by Render |
 
-### Authentication
-- `GET /login` - Login page
-- `POST /login` - Process login
-- `GET /register` - Registration page
-- `POST /register` - Process registration
-- `GET /logout` - Logout
+## Default Accounts
 
-### Admin Routes
-- `GET /admin/dashboard` - Admin dashboard
-- `GET /admin/products` - Manage products
-- `POST /admin/product/approve/{id}` - Approve product
-- `POST /admin/product/reject/{id}` - Reject product
+| Role | Username | Password |
+|---|---|---|
+| Admin | admin | admin123 |
+| Seller | seller1 | seller123 |
+| Buyer | buyer1 | buyer123 |
 
-### Seller Routes
-- `GET /seller/dashboard` - Seller dashboard
-- `GET /seller/products` - View seller's products
-- `GET /seller/product/add` - Add product form
-- `POST /seller/product/add` - Process add product
+Change these credentials immediately for any shared or public deployment.
 
-### Buyer Routes
-- `GET /buyer/dashboard` - Buyer dashboard
-- `GET /buyer/auctions` - Browse auctions
-- `GET /buyer/auction/{id}` - View auction details
-- `POST /buyer/auction/{id}/bid` - Place bid
+## Routes at a Glance
 
-## Configuration
+| Area | Routes |
+|---|---|
+| Auth | GET /login, POST /login, GET /register, POST /register, GET /logout |
+| Admin | GET /admin/dashboard, GET /admin/products, GET /admin/users, GET /admin/slots |
+| Seller | GET /seller/dashboard, GET /seller/products, GET and POST /seller/product/add |
+| Buyer | GET /buyer/dashboard, GET /buyer/auctions, GET /buyer/auction/{id}, POST /buyer/auction/{id}/bid |
 
-### Application Properties
-The main configuration is in `src/main/resources/application.yml`:
+## Project Structure
 
-```yaml
-spring:
-  datasource:
-    url: jdbc:mysql://localhost:3306/auction_system?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC
-    username: root
-    password: password
-  jpa:
-    hibernate:
-      ddl-auto: update
-    show-sql: true
+```text
+Auction-System-main/
+   src/main/java/com/in/
+      controller/
+      service/
+      repository/
+      entity/
+      scheduled/
+   src/main/resources/
+      templates/
+      application.yml
+      application-prod.yml
+      application-postgres.yml
+   Dockerfile
+   render.yaml
+   pom.xml
 ```
 
 ## Troubleshooting
 
-### Common Issues
+### Database connection issues
 
-1. **Database Connection Error**
-   - Ensure MySQL is running
-   - Verify database credentials in `application.yml`
-   - Check if the database exists
+- Ensure database is reachable and credentials are correct.
+- Verify selected profile matches DB driver and dialect.
 
-2. **Port Already in Use**
-   - The application runs on port 8080 by default
-   - Change the port in `application.yml`:
-     ```yaml
-     server:
-       port: 8081
-     ```
+### Old UI still visible
 
-3. **Build Errors**
-   - Ensure Java 8+ is installed
-   - Check Maven configuration
-   - Run `mvn clean install` first
+- Rebuild app so templates are recopied to target/classes.
+- Restart service and do a hard refresh in browser.
 
-## Future Enhancements
+### Port conflict
 
-- Email notifications for auction events
-- Real-time bidding updates
-- Payment integration
-- Advanced search and filtering
-- Mobile responsive design improvements
-- REST API for mobile applications
+- Default local port is 9090.
+- Override via server.port or PORT.
+
+## Roadmap
+
+- Live bid updates
+- Notification pipeline
+- Better auction analytics
+- Optional REST-first API mode
 
 ## Contributing
 
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Test thoroughly
-5. Submit a pull request
+1. Create a feature branch.
+2. Keep commits small and focused.
+3. Run build before opening PR.
+4. Open a pull request with test notes and screenshots.
 
 ## License
 
