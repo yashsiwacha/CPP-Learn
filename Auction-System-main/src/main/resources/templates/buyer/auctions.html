@@ -1,196 +1,207 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html class="light" lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Browse Auctions - Auction System</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet"/>
-</head>
-<body>
-    <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container">
-            <a class="navbar-brand" href="/buyer/dashboard"><i class="fas fa-gavel"></i> Auction System</a>
-            <div class="navbar-nav ms-auto">
-                <!-- Real-time IST Clock -->
-                <div class="navbar-text me-4">
-                    <i class="fas fa-clock text-warning"></i>
-                    <span class="text-warning fw-bold" id="liveClock">Loading...</span>
-                    <small class="text-muted d-block" style="font-size: 0.7em;">IST</small>
-                </div>
-                
-                <span class="navbar-text me-3" th:text="'Welcome, ' + ${user.fullName}"></span>
-                <a class="nav-link" href="/logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
-            </div>
-        </div>
-    </nav>
-
-    <!-- Buyer Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container">
-            <div class="navbar-nav">
-                <a class="nav-link" href="/buyer/dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
-                <a class="nav-link active" href="/buyer/auctions"><i class="fas fa-gavel"></i> Browse Auctions</a>
-                <a class="nav-link" href="/buyer/my-bids"><i class="fas fa-hand-holding-usd"></i> My Bids</a>
-                <a class="nav-link" href="/buyer/search"><i class="fas fa-search"></i> Search</a>
-            </div>
-        </div>
-    </nav>
-
-    <!-- Alert Messages -->
-    <div class="container mt-3" th:if="${success != null or error != null}">
-        <div th:if="${success}" class="alert alert-success alert-dismissible fade show">
-            <span th:text="${success}"></span>
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        </div>
-        <div th:if="${error}" class="alert alert-danger alert-dismissible fade show">
-            <span th:text="${error}"></span>
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        </div>
-    </div>
-
-    <div class="container mt-4">
-        <h1><i class="fas fa-gavel"></i> Browse Auctions</h1>
-
-        <!-- Filter Options -->
-        <div class="row mt-4">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-header">
-                        <h5><i class="fas fa-filter"></i> Filter Auctions</h5>
-                    </div>
-                    <div class="card-body">
-                        <form method="get" action="/buyer/auctions">
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <label for="status" class="form-label">Status</label>
-                                    <select class="form-select" id="status" name="status">
-                                        <option value="">All Statuses</option>
-                                        <option value="ACTIVE" th:selected="${status == 'ACTIVE'}">Active</option>
-                                        <option value="PENDING" th:selected="${status == 'PENDING'}">Pending</option>
-                                        <option value="COMPLETED" th:selected="${status == 'COMPLETED'}">Completed</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-4">
-                                    <label for="minPrice" class="form-label">Min Price</label>
-                                    <input type="number" class="form-control" id="minPrice" name="minPrice" th:value="${minPrice}" step="0.01" />
-                                </div>
-                                <div class="col-md-4">
-                                    <label for="maxPrice" class="form-label">Max Price</label>
-                                    <input type="number" class="form-control" id="maxPrice" name="maxPrice" th:value="${maxPrice}" step="0.01" />
-                                </div>
-                            </div>
-                            <div class="row mt-3">
-                                <div class="col-12">
-                                    <button type="submit" class="btn btn-primary">
-                                        <i class="fas fa-filter"></i> Apply Filters
-                                    </button>
-                                    <a href="/buyer/auctions" class="btn btn-secondary">
-                                        <i class="fas fa-times"></i> Clear Filters
-                                    </a>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Auctions Grid -->
-        <div class="row mt-4">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <h5><i class="fas fa-list"></i> Available Auctions</h5>
-                        <span class="badge bg-info" th:text="${auctions != null ? #lists.size(auctions) : 0} + ' auctions found'"></span>
-                    </div>
-                    <div class="card-body">
-                        <div th:if="${auctions == null or #lists.isEmpty(auctions)}" class="text-center py-5">
-                            <i class="fas fa-gavel fa-3x text-muted mb-3"></i>
-                            <h5 class="text-muted">No auctions found</h5>
-                            <p class="text-muted">Try adjusting your filters or check back later for new auctions.</p>
-                        </div>
-                        
-                        <div th:if="${auctions != null and !#lists.isEmpty(auctions)}" class="row">
-                            <div th:each="auction : ${auctions}" class="col-md-6 col-lg-4 mb-4">
-                                <div class="card h-100">
-                                    <div class="card-img-top" style="height: 200px; background-color: #f8f9fa; display: flex; align-items: center; justify-content: center;" th:if="${auction.imageUrl == null or auction.imageUrl == ''}">
-                                        <i class="fas fa-image fa-3x text-muted"></i>
-                                    </div>
-                                    <img th:if="${auction.imageUrl != null and auction.imageUrl != ''}" th:src="${auction.imageUrl}" class="card-img-top" style="height: 200px; object-fit: cover;" th:alt="${auction.title}" />
-                                    
-                                    <div class="card-body d-flex flex-column">
-                                        <h6 class="card-title" th:text="${auction.title}"></h6>
-                                        <p class="card-text flex-grow-1" th:text="${auction.description}"></p>
-                                        
-                                        <div class="mt-auto">
-                                            <div class="row">
-                                                <div class="col-6">
-                                                    <small class="text-muted">Starting Price</small>
-                                                    <div class="fw-bold" th:text="'₹' + ${auction.startingPrice}"></div>
-                                                </div>
-                                                <div class="col-6">
-                                                    <small class="text-muted">Current Bid</small>
-                                                    <div class="fw-bold text-success" th:text="'₹' + ${auction.currentHighestBid}"></div>
-                                                </div>
-                                            </div>
-                                            
-                                            <div class="mt-2">
-                                                <span class="badge bg-warning" th:if="${auction.status.name() == 'PENDING'}">Pending Approval</span>
-                                                <span class="badge bg-success" th:if="${auction.status.name() == 'ACTIVE'}">Active</span>
-                                                <span class="badge bg-info" th:if="${auction.status.name() == 'COMPLETED'}">Completed</span>
-                                            </div>
-                                            
-                                            <div class="mt-2">
-                                                <small class="text-muted">
-                                                    Ends: <span th:text="${auction.auctionEndTime}"></span>
-                                                </small>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="card-footer">
-                                        <a th:href="@{'/buyer/auction/' + ${auction.id}}" class="btn btn-primary btn-sm w-100">
-                                            <i class="fas fa-eye"></i> View Details &amp; Bid
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-    
-    <!-- Real-time IST Clock Script -->
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Auctions | The Digital Curator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <script>
-        function updateClock() {
-            const now = new Date();
-            const istOffset = 5.5 * 60 * 60 * 1000;
-            const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
-            const istTime = new Date(utc + istOffset);
-            
-            const hours = String(istTime.getHours()).padStart(2, '0');
-            const minutes = String(istTime.getMinutes()).padStart(2, '0');
-            const seconds = String(istTime.getSeconds()).padStart(2, '0');
-            
-            const options = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric', timeZone: 'Asia/Kolkata' };
-            const dateStr = istTime.toLocaleDateString('en-IN', options);
-            
-            const timeString = `${hours}:${minutes}:${seconds}`;
-            const clockElement = document.getElementById('liveClock');
-            
-            if (clockElement) {
-                clockElement.innerHTML = `<div>${timeString}</div><small style="font-size: 0.7em;">${dateStr}</small>`;
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "on-secondary-fixed-variant": "#673d00",
+                        "outline": "#75777d",
+                        "surface-container-high": "#dce9ff",
+                        "on-secondary": "#ffffff",
+                        "on-secondary-fixed": "#2b1700",
+                        "surface-container": "#e5eeff",
+                        "error": "#ba1a1a",
+                        "inverse-primary": "#bac7dc",
+                        "primary-container": "#101d2c",
+                        "on-surface": "#0b1c30",
+                        "secondary-fixed": "#ffddbb",
+                        "inverse-surface": "#213145",
+                        "inverse-on-surface": "#eaf1ff",
+                        "on-primary": "#ffffff",
+                        "secondary": "#885200",
+                        "secondary-container": "#fe9d00",
+                        "on-background": "#0b1c30",
+                        "tertiary-fixed": "#d8e2ff",
+                        "tertiary": "#000107",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-dim": "#cbdbf5",
+                        "on-tertiary-fixed-variant": "#004493",
+                        "on-primary-fixed": "#0f1c2b",
+                        "tertiary-fixed-dim": "#adc7ff",
+                        "primary-fixed": "#d6e3f8",
+                        "background": "#f8f9ff",
+                        "on-secondary-container": "#653c00",
+                        "on-primary-container": "#788598",
+                        "surface-bright": "#f8f9ff",
+                        "primary-fixed-dim": "#bac7dc",
+                        "on-tertiary": "#ffffff",
+                        "tertiary-container": "#001b42",
+                        "primary": "#000104",
+                        "on-primary-fixed-variant": "#3b4858",
+                        "on-tertiary-fixed": "#001a41",
+                        "surface-variant": "#d3e4fe",
+                        "on-surface-variant": "#44474c",
+                        "surface-tint": "#535f71",
+                        "on-error": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "on-error-container": "#93000a",
+                        "outline-variant": "#c4c6cc",
+                        "on-tertiary-container": "#2481ff",
+                        "surface-container-low": "#eff4ff",
+                        "surface": "#f8f9ff",
+                        "secondary-fixed-dim": "#ffb868"
+                    },
+                    borderRadius: {
+                        DEFAULT: "0.25rem",
+                        lg: "0.5rem",
+                        xl: "0.75rem",
+                        full: "9999px"
+                    },
+                    fontFamily: {
+                        headline: ["Inter"],
+                        body: ["Inter"],
+                        label: ["Inter"]
+                    }
+                }
             }
-        }
-        
-        updateClock();
-        setInterval(updateClock, 1000);
+        };
     </script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .premium-gradient {
+            background: linear-gradient(135deg, #000104 0%, #101d2c 100%);
+        }
+        .gilded-gradient {
+            background: linear-gradient(135deg, #885200 0%, #fe9d00 100%);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface min-h-screen">
+<nav class="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-xl shadow-[0_20px_40px_rgba(11,28,48,0.06)] flex justify-between items-center px-8 py-4">
+    <div class="flex items-center gap-8">
+        <span class="text-xl font-bold tracking-tighter text-primary">The Digital Curator</span>
+        <div class="hidden md:flex gap-6 items-center">
+            <a class="text-slate-500 hover:text-primary transition-colors font-['Inter'] tracking-tight" href="/buyer/dashboard">Dashboard</a>
+            <a class="text-[#885200] border-b-2 border-[#885200] pb-1 font-['Inter'] tracking-tight" href="/buyer/auctions">Auctions</a>
+            <a class="text-slate-500 hover:text-primary transition-colors font-['Inter'] tracking-tight" href="/buyer/my-bids">My Bids</a>
+            <a class="text-slate-500 hover:text-primary transition-colors font-['Inter'] tracking-tight" href="/buyer/search">Search</a>
+        </div>
+    </div>
+    <div class="flex items-center gap-4">
+        <span class="hidden md:inline text-sm text-on-surface-variant" th:text="${user.fullName}">Buyer</span>
+        <a class="material-symbols-outlined text-on-surface cursor-pointer hover:opacity-80 transition-all" href="/logout">logout</a>
+    </div>
+</nav>
+
+<aside class="h-screen w-64 fixed left-0 top-0 pt-20 bg-white flex-col border-r border-transparent hidden xl:flex">
+    <div class="px-6 py-6">
+        <h2 class="text-lg font-black text-[#885200]">System Console</h2>
+        <p class="text-xs text-on-surface-variant">Operator ID: 8821</p>
+    </div>
+    <nav class="flex-1 space-y-1">
+        <div class="bg-[#d3e4fe] text-[#000104] rounded-r-full font-bold px-6 py-3 flex items-center gap-3">
+            <span class="material-symbols-outlined">sensors</span>
+            <span class="text-sm">Live Feed</span>
+        </div>
+        <a class="text-slate-400 hover:bg-slate-100 transition-all px-6 py-3 flex items-center gap-3" href="/buyer/dashboard">
+            <span class="material-symbols-outlined">dashboard</span>
+            <span class="text-sm">Dashboard</span>
+        </a>
+        <a class="text-slate-400 hover:bg-slate-100 transition-all px-6 py-3 flex items-center gap-3" href="/buyer/my-bids">
+            <span class="material-symbols-outlined">payments</span>
+            <span class="text-sm">My Bids</span>
+        </a>
+        <a class="text-slate-400 hover:bg-slate-100 transition-all px-6 py-3 flex items-center gap-3" href="/buyer/search">
+            <span class="material-symbols-outlined">search</span>
+            <span class="text-sm">Search</span>
+        </a>
+    </nav>
+    <div class="p-6 border-t border-outline-variant/10">
+        <button class="w-full py-3 bg-error text-white rounded-xl text-sm font-bold uppercase tracking-widest">Emergency Stop</button>
+    </div>
+</aside>
+
+<main class="pt-24 px-8 pb-12 xl:ml-64">
+    <header class="mb-12 flex flex-col md:flex-row md:justify-between md:items-end gap-4">
+        <div>
+            <h1 class="text-4xl font-extrabold tracking-tighter text-primary">Auction Dashboard</h1>
+            <p class="text-on-surface-variant mt-2 text-lg">Managing high-frequency assets with curated precision.</p>
+        </div>
+        <div class="flex items-center gap-4 bg-surface-container-low px-6 py-3 rounded-2xl">
+            <div class="flex flex-col items-end">
+                <span class="text-xs font-bold text-on-surface-variant uppercase tracking-widest">Active Lots</span>
+                <span class="text-sm font-semibold text-primary" th:text="${auctions != null ? #lists.size(auctions) : 0} + ' listings'">0 listings</span>
+            </div>
+            <div class="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
+        </div>
+    </header>
+
+    <section th:if="${auctions == null or #lists.isEmpty(auctions)}" class="bg-white rounded-3xl p-12 text-center border border-outline-variant/20">
+        <span class="material-symbols-outlined text-6xl text-on-surface-variant">gavel</span>
+        <h2 class="text-2xl font-black text-primary mt-4">No auctions found</h2>
+        <p class="text-on-surface-variant mt-2">Try again later or switch to search.</p>
+        <a class="inline-block mt-6 px-6 py-3 rounded-xl bg-primary text-white font-bold" href="/buyer/search">Open Search</a>
+    </section>
+
+    <section th:if="${auctions != null and !#lists.isEmpty(auctions)}" class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-16">
+        <article th:each="auction : ${auctions}" class="group">
+            <div class="relative overflow-hidden rounded-2xl bg-surface-container-low aspect-[4/3] flex items-center justify-center p-6">
+                <img th:if="${auction.imageUrl != null and auction.imageUrl != ''}"
+                     th:src="${auction.imageUrl}"
+                     th:alt="${auction.title}"
+                     class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"/>
+                <div th:if="${auction.imageUrl == null or auction.imageUrl == ''}" class="w-full h-full flex items-center justify-center">
+                    <span class="material-symbols-outlined text-6xl text-on-surface-variant">image</span>
+                </div>
+                <div class="absolute top-4 left-4">
+                    <span class="bg-tertiary-container/80 backdrop-blur-md text-on-tertiary-container px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1">
+                        <span class="w-1.5 h-1.5 bg-on-tertiary-container rounded-full animate-pulse"></span>
+                        <span th:text="${auction.status}">LIVE</span>
+                    </span>
+                </div>
+            </div>
+
+            <div class="mt-6 flex justify-between items-start gap-4">
+                <div class="max-w-[70%]">
+                    <h3 class="text-2xl font-bold tracking-tight text-primary" th:text="${auction.title}">Auction title</h3>
+                    <p class="text-on-surface-variant text-sm mt-1" th:text="${auction.description}">Description</p>
+                </div>
+                <div class="text-right">
+                    <span class="block text-xs font-bold text-on-surface-variant uppercase tracking-widest">Current Bid</span>
+                    <span class="text-2xl font-black text-primary tracking-tighter" th:text="'₹' + ${auction.currentHighestBid}">₹0</span>
+                </div>
+            </div>
+
+            <div class="mt-4 flex items-center justify-between gap-3 flex-wrap">
+                <div class="flex gap-4">
+                    <div class="flex flex-col">
+                        <span class="text-[10px] font-bold text-on-surface-variant uppercase">Starts</span>
+                        <span class="text-sm font-semibold text-on-surface" th:text="${auction.auctionStartTime}">--</span>
+                    </div>
+                    <div class="flex flex-col border-l border-outline-variant/30 pl-4">
+                        <span class="text-[10px] font-bold text-on-surface-variant uppercase">Ends</span>
+                        <span class="text-sm font-semibold text-error" th:text="${auction.auctionEndTime}">--</span>
+                    </div>
+                </div>
+                <a th:href="@{'/buyer/auction/' + ${auction.id}}"
+                   class="gilded-gradient text-white px-8 py-3 rounded-xl font-bold text-sm shadow-lg hover:opacity-90 transition-all">
+                    View Auction
+                </a>
+            </div>
+        </article>
+    </section>
+</main>
 </body>
 </html>

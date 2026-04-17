@@ -22,11 +22,11 @@ Role-based auction platform built with Spring Boot, Thymeleaf, and JPA. The app 
 
 ## Feature Overview
 
-| Role | What You Can Do |
-|---|---|
-| Admin | Approve or reject products, manage users, monitor system activity, manage auction slots |
-| Seller | Add products, configure price and schedule, track product state and bidding activity |
-| Buyer | Browse active auctions, inspect details, place bids, view bid history, search products |
+| Role   | What You Can Do                                                                         |
+| ------ | --------------------------------------------------------------------------------------- |
+| Admin  | Approve or reject products, manage users, monitor system activity, manage auction slots |
+| Seller | Add products, configure price and schedule, track product state and bidding activity    |
+| Buyer  | Browse active auctions, inspect details, place bids, view bid history, search products  |
 
 ## Architecture
 
@@ -42,16 +42,16 @@ flowchart LR
 
 ## Tech Stack
 
-| Layer | Technology |
-|---|---|
-| Runtime | Java 11 |
-| Framework | Spring Boot 1.1.8.RELEASE |
-| Web | Spring MVC + Thymeleaf |
-| Data | Spring Data JPA + Hibernate |
+| Layer     | Technology                                 |
+| --------- | ------------------------------------------ |
+| Runtime   | Java 11                                    |
+| Framework | Spring Boot 1.1.8.RELEASE                  |
+| Web       | Spring MVC + Thymeleaf                     |
+| Data      | Spring Data JPA + Hibernate                |
 | Databases | MySQL (default), PostgreSQL (prod profile) |
-| Security | Session auth + BCrypt password encoding |
-| Build | Maven |
-| Container | Docker multi-stage build |
+| Security  | Session auth + BCrypt password encoding    |
+| Build     | Maven                                      |
+| Container | Docker multi-stage build                   |
 
 ## Local Setup
 
@@ -93,32 +93,32 @@ This repository already contains:
 
 ### Recommended env vars
 
-| Variable | Purpose |
-|---|---|
-| SPRING_PROFILES_ACTIVE | Set to prod |
-| DATABASE_URL | Managed DB connection string |
-| DB_USERNAME | DB username |
-| DB_PASSWORD | DB password |
-| PORT | Runtime port injected by Render |
+| Variable               | Purpose                         |
+| ---------------------- | ------------------------------- |
+| SPRING_PROFILES_ACTIVE | Set to prod                     |
+| DATABASE_URL           | Managed DB connection string    |
+| DB_USERNAME            | DB username                     |
+| DB_PASSWORD            | DB password                     |
+| PORT                   | Runtime port injected by Render |
 
 ## Default Accounts
 
-| Role | Username | Password |
-|---|---|---|
-| Admin | admin | admin123 |
-| Seller | seller1 | seller123 |
-| Buyer | buyer1 | buyer123 |
+| Role   | Username | Password  |
+| ------ | -------- | --------- |
+| Admin  | admin    | admin123  |
+| Seller | seller1  | seller123 |
+| Buyer  | buyer1   | buyer123  |
 
 Change these credentials immediately for any shared or public deployment.
 
 ## Routes at a Glance
 
-| Area | Routes |
-|---|---|
-| Auth | GET /login, POST /login, GET /register, POST /register, GET /logout |
-| Admin | GET /admin/dashboard, GET /admin/products, GET /admin/users, GET /admin/slots |
-| Seller | GET /seller/dashboard, GET /seller/products, GET and POST /seller/product/add |
-| Buyer | GET /buyer/dashboard, GET /buyer/auctions, GET /buyer/auction/{id}, POST /buyer/auction/{id}/bid |
+| Area   | Routes                                                                                           |
+| ------ | ------------------------------------------------------------------------------------------------ |
+| Auth   | GET /login, POST /login, GET /register, POST /register, GET /logout                              |
+| Admin  | GET /admin/dashboard, GET /admin/products, GET /admin/users, GET /admin/slots                    |
+| Seller | GET /seller/dashboard, GET /seller/products, GET and POST /seller/product/add                    |
+| Buyer  | GET /buyer/dashboard, GET /buyer/auctions, GET /buyer/auction/{id}, POST /buyer/auction/{id}/bid |
 
 ## Project Structure
 
